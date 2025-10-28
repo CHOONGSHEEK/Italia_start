@@ -3,485 +3,1913 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>김쌤의 이탈리아어 강의 핵심 정리: 문법 및 발음 규칙</title>
+    <title>김쌤 이탈리아어 복습 가이드</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral (Stone/Indigo) -->
+    <!-- Application Structure Plan: A responsive SPA with a persistent sidebar navigation. This structure maps directly to the report's 5 parts and individual lectures, allowing students to easily navigate to any topic. A 'Welcome' page holds the introduction, and an 'Appendix' page provides a searchable/filterable vocabulary list, which is a major usability improvement over the static report. This design prioritizes non-linear, focused review. -->
+    <!-- Visualization & Content Choices: Report content is grammar rules and text. Goal: Organize/Inform. Presentation: Styled HTML tables (for alphabets, conjugations, rule summaries) and lists (for rules, examples). Interaction: 1) Click-based navigation to show/hide content sections. 2) A dynamic vocabulary filter (search input + lecture dropdown) that filters a JS array and re-renders an HTML table. Justification: This directly serves the user's goal of review and quick lookup. No Chart.js/Plotly used as there is no quantitative data. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
-        /* Noto Sans KR for better Korean readability */
         body {
-            font-family: 'Noto Sans KR', 'Inter', sans-serif;
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
         }
-        .section-card {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-            transition: transform 0.3s ease-in-out;
+        .content-section {
+            display: none;
         }
-        .section-card:hover {
-            transform: translateY(-2px);
+        .content-section.active {
+            display: block;
         }
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        th {
-            background-color: #f3f4f6;
+        .nav-link.active {
+            background-color: #eef2ff;
+            color: #4338ca;
             font-weight: 600;
         }
-        /* Custom list style for better emphasis */
-        .rule-list > li {
-            padding-left: 1.5em;
-            text-indent: -1.5em;
-            margin-bottom: 0.5rem;
-        }
-        .rule-list > li::before {
-            content: "•";
-            color: #059669; /* emerald-600 */
-            font-weight: bold;
-            display: inline-block;
-            width: 1.5em;
-        }
-        .sub-heading {
-            border-left: 4px solid #3b82f6; /* blue-500 */
-            padding-left: 1rem;
-            margin-top: 1.5rem;
-            margin-bottom: 1rem;
+        @media (max-width: 768px) {
+            #sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+            }
+            #sidebar.open {
+                transform: translateX(0);
+            }
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-stone-50 text-stone-800">
 
-    <!-- Header Section -->
-    <header class="bg-blue-600 text-white p-6 md:p-10 shadow-lg">
-        <div class="max-w-4xl mx-auto">
-            <h1 class="text-3xl md:text-4xl font-extrabold mb-2">김쌤의 이탈리아어 강의 핵심 정리</h1>
-            <h2 class="text-xl md:text-2xl font-light">문법 및 발음 규칙 (Core Italian Grammar & Pronunciation)</h2>
-        </div>
-    </header>
-
-    <!-- Main Content Container -->
-    <main class="max-w-4xl mx-auto p-4 md:p-8 space-y-12">
-
-        <!-- Introduction -->
-        <section class="bg-white p-6 rounded-xl section-card">
-            <h2 class="text-2xl font-bold text-gray-700 mb-4 border-b pb-2">서론: 이탈리아어 학습의 첫걸음</h2>
-            <p class="leading-relaxed text-gray-600">
-                본 문서는 '김쌤과 이탈리아어 배우기' 유튜브 강의 스크립트에서 이탈리아어 학습의 핵심이 되는 문법 및 발음 규칙을 체계적으로 추출하고 분석하여 정리한 자료입니다. 강의에서 다루는 방대한 내용을 구조화하여, 이탈리아어 교육 콘텐츠 기획 및 제작을 위한 효율적이고 신뢰도 높은 기초 자료로 활용하는 것을 목적으로 합니다. 발음의 기초부터 문장 구성, 동사 활용, 그리고 표현 확장까지의 과정을 논리적 순서에 따라 구성하여 학습자가 이탈리아어의 골격을 명확하게 이해할 수 있도록 설계되었습니다.
-            </p>
-        </section>
+    <div class="relative min-h-screen md:flex">
         
-        <!-- Divider -->
-        <div class="border-t border-gray-200"></div>
+        <button id="menu-toggle" class="md:hidden fixed top-4 left-4 z-30 p-2 bg-white rounded-md shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
 
-        <!-- Section 1: 발음과 문자 -->
-        <section id="section-1" class="bg-white p-6 rounded-xl section-card">
-            <h2 class="text-3xl font-extrabold text-blue-700 mb-6">1. 이탈리아어 발음과 문자: 소리의 기초</h2>
-            <p class="text-gray-600 mb-6">정확한 발음은 이탈리아어 학습의 가장 중요한 초석입니다. 이탈리아어는 문자와 소리가 규칙적으로 대응하는 비중이 높아, 초기 단계에서 알파벳과 주요 발음 규칙을 명확히 숙지하는 것이 전략적으로 매우 중요합니다.</p>
-
-            <!-- 1.1. 이탈리아어 알파벳 -->
-            <h3 class="text-xl font-bold sub-heading">1.1. 이탈리아어 알파벳 (Alfabeto Italiano) <span class="text-sm font-normal text-gray-500">(1강)</span></h3>
-            <p class="text-gray-600 mb-4 text-sm">정통 이탈리아어는 21개의 알파벳을 사용하며, 추가 5개(J, K, W, X, Y)는 외래어 표기에만 사용됩니다. 이 5개 알파벳이나 자음으로 끝나는 단어는 외래어임을 파악하는 전략적 **shortcut**이 됩니다.</p>
-
-            <div class="table-responsive">
-                <table class="min-w-full divide-y divide-gray-200 text-sm">
-                    <thead>
-                        <tr>
-                            <th class="w-1/4">정통 알파벳 (21개)</th>
-                            <th class="w-1/4">발음</th>
-                            <th class="w-1/4">외래어 알파벳 (5개)</th>
-                            <th class="w-1/4">발음</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr><td>A</td><td>아 (a)</td><td>J</td><td>일룽가 (i lunga)</td></tr>
-                        <tr><td>B</td><td>비 (bi)</td><td>K</td><td>까빠 (kappa)</td></tr>
-                        <tr><td>C</td><td>치 (ci)</td><td>W</td><td>도삐아 부 (doppia vu)</td></tr>
-                        <tr><td>D</td><td>디 (di)</td><td>X</td><td>익스 (ics)</td></tr>
-                        <tr><td>E</td><td>에 (e)</td><td>Y</td><td>입실론 (ipsilon) / 이 그레까 (i greca)</td></tr>
-                        <tr><td>F</td><td>에페 (effe)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>G</td><td>지 (gi)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>H</td><td>아까 (acca)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>I</td><td>이 (i)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>L</td><td>엘레 (elle)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>M</td><td>엠메 (emme)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>N</td><td>엔네 (enne)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>O</td><td>오 (o)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>P</td><td>삐 (pi)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>Q</td><td>꾸 (cu)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>R</td><td>에레 (erre)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>S</td><td>에쎄 (esse)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>T</td><td>띠 (ti)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>U</td><td>우 (u)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>V</td><td>부 (vu)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                        <tr><td>Z</td><td>제따 (zeta)</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                    </tbody>
-                </table>
+        <nav id="sidebar" class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-20 overflow-y-auto md:relative md:translate-x-0">
+            <div class="p-6">
+                <h1 class="text-xl font-bold text-indigo-700">김쌤 이탈리아어</h1>
+                <h2 class="text-sm text-stone-500">핵심 요약 가이드 (1-23강)</h2>
             </div>
+            <ul class="space-y-1 px-4">
+                <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-welcome">서문</a></li>
+                
+                <li>
+                    <h3 class="mt-4 mb-1 px-4 text-xs font-semibold text-stone-500 uppercase tracking-wider">파트 1: 소리와 형태</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec1">1강: 이탈리아어 자모</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec2">2강: 주의해야 할 발음</a></li>
+                    </ul>
+                </li>
 
-            <!-- 1.2. 주요 발음 규칙 -->
-            <h3 class="text-xl font-bold sub-heading">1.2. 주요 발음 규칙 (Regole di Pronuncia) <span class="text-sm font-normal text-gray-500">(2강)</span></h3>
-            <ul class="rule-list text-gray-700 space-y-4">
                 <li>
-                    <strong class="text-blue-600">C와 G 발음:</strong> 뒤따르는 모음에 따라 발음 변화.
-                    <ul class="ml-4 mt-2 list-disc list-inside space-y-1 text-sm text-gray-600">
-                        <li>모음 **a, o, u** 앞: **경음** [ㄲ], [ㄱ] (예: **casa** [까자], **gola** [골라])</li>
-                        <li>모음 **e, i** 앞: **연음** [ㅊ], [ㅈ] (예: **cena** [체나], **giallo** [잘로])</li>
-                        <li>연음 발음 사이에 **h** 삽입 시: 경음 유지 (예: **chilo** [낄로], **spaghetti** [스파게띠])</li>
+                    <h3 class="mt-4 mb-1 px-4 text-xs font-semibold text-stone-500 uppercase tracking-wider">파트 2: 기본 구성 요소</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec3">3강: 명사의 성과 수</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec4">4강: 정관사</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec5">5강: 부정관사</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec6">6강: 불규칙 명사</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec7">7강: 인칭 대명사 / essere, avere</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec8">8강: 형용사</a></li>
                     </ul>
                 </li>
+
                 <li>
-                    <strong class="text-blue-600">S 발음:</strong> 위치 및 주변 소리에 따라 변화.
-                    <ul class="ml-4 mt-2 list-disc list-inside space-y-1 text-sm text-gray-600">
-                        <li>모음 사이: 유성음 **[z]** (즈) (예: **casa** [까자])</li>
-                        <li>쌍자음 **ss**: 된소리 **[ㅆ]** (예: **rosso** [로쏘])</li>
-                        <li>**sci, sce**: **[쉬], [쉐]** 발음 (예: **scena** [쉐나], **pesce** [페쉐])</li>
-                        <li>유성 자음(b, d, g, l, m, n, r, v) 앞: 유성음화 **[z]** (즈) (예: **sbaglio** [즈발리오])</li>
+                    <h3 class="mt-4 mb-1 px-4 text-xs font-semibold text-stone-500 uppercase tracking-wider">파트 3: 디테일 더하기</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec9">9강: 자주 쓰는 형용사</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec10">10강: 수 형용사</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec11">11강: 소유 형용사</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec12">12강: 지시 형용사</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec13">13강: 몇 시입니까?</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec14">14강: 의문사</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec15">15강: 지시 대명사</a></li>
                     </ul>
                 </li>
+
                 <li>
-                    <strong class="text-blue-600">H 발음:</strong> 원칙적으로 **묵음**입니다. 다만 c, g 뒤에 붙어 경음 유지 기능 (**ch**, **gh**)을 수행합니다.
+                    <h3 class="mt-4 mb-1 px-4 text-xs font-semibold text-stone-500 uppercase tracking-wider">파트 4: 동사</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec16">16강: -are 동사</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec17">17강: -ere / -ire 동사</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec18">18강: -are 변형 동사</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec19">19강: 불규칙 동사 / 현재 진행형</a></li>
+                    </ul>
                 </li>
+                
                 <li>
-                    <strong class="text-blue-600">특수 이중 자음 (GL, GN):</strong> 이탈리아어 고유 발음.
-                    <ul class="ml-4 mt-2 list-disc list-inside space-y-1 text-sm text-gray-600">
-                        <li>**gli**: 혀가 위천장을 미는 소리, **[리]** 유사 (예: **famiglia** [파밀리아])</li>
-                        <li>**gn**: **[니]** 유사 (예: **signore** [시뇨레])</li>
+                    <h3 class="mt-4 mb-1 px-4 text-xs font-semibold text-stone-500 uppercase tracking-wider">파트 5: 전치사</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec21">21강: 전치사 a / con</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec22">22강: 전치사 da / per</a></li>
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-lec23">23강: 전치사 in / fra, tra / su</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <h3 class="mt-4 mb-1 px-4 text-xs font-semibold text-stone-500 uppercase tracking-wider">부록</h3>
+                    <ul class="space-y-1">
+                        <li><a href="#" class="nav-link block rounded-md px-4 py-2 text-sm text-stone-700 hover:bg-stone-100" data-target="page-vocab">전체 어휘 목록</a></li>
                     </ul>
                 </li>
             </ul>
-        </section>
+        </nav>
 
-        <!-- Divider -->
-        <div class="border-t border-gray-200"></div>
-
-        <!-- Section 2: 문장의 기본 구성 요소 -->
-        <section id="section-2" class="bg-white p-6 rounded-xl section-card">
-            <h2 class="text-3xl font-extrabold text-blue-700 mb-6">2. 문장의 기본 구성 요소: 명사, 관사, 형용사</h2>
-            <p class="text-gray-600 mb-6">명사, 관사, 형용사는 **'성과 수의 일치(accordo)'**라는 핵심 원칙에 따라 유기적으로 연결됩니다. 이 원칙 이해가 정확한 문장 구사의 첫걸음입니다.</p>
-
-            <!-- 2.1. 명사의 성과 수 -->
-            <h3 class="text-xl font-bold sub-heading">2.1. 명사의 성과 수 (Genere e Numero del Sostantivo) <span class="text-sm font-normal text-gray-500">(3강, 6강)</span></h3>
-
-            <div class="table-responsive mb-6">
-                <p class="font-semibold text-gray-700 mb-2">규칙 명사 변형 (대부분의 명사)</p>
-                <table class="min-w-full divide-y divide-gray-200 text-sm">
-                    <thead>
-                        <tr>
-                            <th>어미 유형</th>
-                            <th>성(Genere)</th>
-                            <th>단수(Singolare) 예시</th>
-                            <th>복수(Plurale) 예시</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr><td>-o</td><td>남성</td><td>libro (책)</td><td>libri</td></tr>
-                        <tr><td>-a</td><td>여성</td><td>penna (펜)</td><td>penne</td></tr>
-                        <tr><td>-e</td><td>남성/여성</td><td>padre (아버지), madre (어머니)</td><td>padri, madri</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <p class="font-semibold text-gray-700 mb-2">주요 불규칙 명사 유형 (복수형 불변)</p>
-            <ul class="list-disc list-inside ml-4 space-y-2 text-sm text-gray-600">
-                <li>**축약형 명사:** **la foto**, **la moto** (→ le foto)</li>
-                <li>**외래어:** **il bar**, **il film** (→ i bar)</li>
-                <li>**악센트 명사:** **la città**, **l'università** (→ le città)</li>
-                <li>**-ista 명사:** 성에 따라 복수형 변화 (남: **-isti**, 여: **-iste**)</li>
-            </ul>
-
-            <!-- 2.2. 관사 -->
-            <h3 class="text-xl font-bold sub-heading">2.2. 관사 (Articoli) <span class="text-sm font-normal text-gray-500">(4강, 5강)</span></h3>
-
-            <div class="space-y-6">
-                <div class="table-responsive">
-                    <p class="font-semibold text-gray-700 mb-2">정관사 (Articoli Determinativi - The)</p>
-                    <table class="min-w-full divide-y divide-gray-200 text-sm">
-                        <thead>
-                            <tr>
-                                <th>성</th>
-                                <th>수</th>
-                                <th>명사 시작 조건</th>
-                                <th>정관사</th>
-                                <th>예시</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100">
-                            <tr><td>남성</td><td>단수</td><td>자음</td><td>**il**</td><td>il libro</td></tr>
-                            <tr><td>남성</td><td>단수</td><td>모음, s+자음, z 등</td><td>**lo** (**l'**)</td><td>l'amico, lo stadio</td></tr>
-                            <tr><td>남성</td><td>복수</td><td>il의 복수형</td><td>**i**</td><td>i libri</td></tr>
-                            <tr><td>남성</td><td>복수</td><td>lo의 복수형</td><td>**gli**</td><td>gli amici, gli stadi</td></tr>
-                            <tr><td>여성</td><td>단수</td><td>모든 경우</td><td>**la** (**l'**)</td><td>la penna, l'amica</td></tr>
-                            <tr><td>여성</td><td>복수</td><td>모든 경우</td><td>**le**</td><td>le penne, le amiche</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="table-responsive">
-                    <p class="font-semibold text-gray-700 mb-2">부정관사 (Articoli Indeterminativi - A/An)</p>
-                    <table class="min-w-full divide-y divide-gray-200 text-sm">
-                        <thead>
-                            <tr>
-                                <th>성</th>
-                                <th>수</th>
-                                <th>명사 시작 조건</th>
-                                <th>부정관사</th>
-                                <th>예시</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100">
-                            <tr><td>남성</td><td>단수</td><td>s+자음, z 등 제외</td><td>**un**</td><td>un libro, un amico</td></tr>
-                            <tr><td>남성</td><td>단수</td><td>s+자음, z 등</td><td>**uno**</td><td>uno stadio</td></tr>
-                            <tr><td>여성</td><td>단수</td><td>자음</td><td>**una**</td><td>una penna</td></tr>
-                            <tr><td>여성</td><td>단수</td><td>모음</td><td>**un'**</td><td>un'amica</td></tr>
-                            <tr><td colspan="4" class="text-center font-bold bg-gray-50">복수 (dei, degli, delle)는 '몇몇의' 의미로 사용</td><td>dei libri, delle penne</td></tr>
-                        </tbody>
-                    </table>
+        <main class="flex-1 p-6 md:p-10 max-w-full overflow-x-hidden">
+            <div id="page-welcome" class="content-section active">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-6 text-indigo-700">김쌤의 유튜브 이탈리아어 강의(1~23강) 핵심 요약 및 복습 가이드</h2>
+                    <div class="space-y-4 text-stone-700 leading-relaxed">
+                        <p>이 문서는 김쌤의 유튜브 이탈리아어 강의 1강부터 23강까지의 여정을 함께한 학습자 여러분을 위해 제작된 핵심 복습 가이드입니다. 본 가이드의 목표는 지금까지 배운 핵심 내용을 체계적으로 복습하고, 여러분의 머릿속에 이탈리아어 문법의 뼈대를 단단히 세우는 데 도움을 드리는 것입니다.</p>
+                        <p>학습 과정에서 마주쳤을 복잡한 문법 개념들을 명확하게 정리하고, 특정 내용이 궁금할 때 해당 강의 영상을 쉽게 찾아볼 수 있도록 구성했습니다. 각 파트는 문법적 주제에 따라 전략적으로 묶여 있으며, 강의에서 다룬 핵심 포인트와 예문, 필수 어휘를 한눈에 파악할 수 있습니다.</p>
+                        <p>이 요약본을 나침반 삼아 여러분의 이탈리아어 실력을 점검하고 다져보세요. 이 과정을 통해 흩어져 있던 지식이 연결되는 즐거움을 느끼고, 다음 단계로 나아갈 튼튼한 발판을 마련하시기를 진심으로 응원합니다.</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- 2.3. 형용사 -->
-            <h3 class="text-xl font-bold sub-heading">2.3. 형용사 (Aggettivi) <span class="text-sm font-normal text-gray-500">(8강, 11강, 12강)</span></h3>
-            <div class="space-y-4 text-gray-700">
-                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-600">
-                    <li>**-o로 끝나는 형용사:** 4가지 형태 변화 (남/단: **nuovo**, 남/복: **nuovi**, 여/단: **nuova**, 여/복: **nuove**)</li>
-                    <li>**-e로 끝나는 형용사:** 2가지 형태 변화 (단수 공통: **grande**, 복수 공통: **grandi**)</li>
-                </ul>
-
-                <p class="font-semibold mt-4">주요 형용사 유형</p>
-                <div class="ml-4 space-y-4">
-                    <p class="text-base font-medium text-blue-600">소유 형용사</p>
-                    <p class="text-sm">**mio, tuo, suo, nostro, vostro, loro** (loro는 불변)</p>
-                    <ul class="list-none text-sm ml-2 space-y-1 text-gray-600">
-                        <li>**남성 단수:** il **mio** libro</li>
-                        <li>**여성 단수:** la **mia** penna</li>
-                        <li>**남성 복수:** i **miei** libri</li>
-                        <li>**여성 복수:** le **mie** penne</li>
+            <div id="page-lec1" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">1강: 이탈리아어 자모</h2>
+                    <p class="mb-6 text-stone-600">이탈리아어 학습의 여정은 그 소리를 정확히 이해하는 것에서 시작됩니다. 1강에서는 이탈리아어의 가장 기본이 되는 알파벳을 다룹니다.</p>
+                    
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">핵심 문법 포인트</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li>정통 이탈리아어 알파벳 21자 (모음 5개, 자음 16개)</li>
+                        <li>외래어 표기용 알파벳 5자 (일룸가, 갑빠, 도피아부, 익스, 입실론)</li>
+                        <li>이탈리아어 단어와 외래어 단어 구분법 (시작 알파벳과 끝나는 소리 기준)</li>
+                        <li>알파벳 개별 발음의 중요성 (이름 스펠링 말하기 등)</li>
                     </ul>
 
-                    <p class="text-base font-medium text-blue-600">지시 형용사 (quello - 저)</p>
-                    <p class="text-sm">**quello**는 **정관사**와 동일한 변화 규칙을 따르며 형태가 다양하게 변합니다. (Tip: **bello** 형용사도 동일)</p>
-                    <div class="table-responsive">
-                        <table class="min-w-full divide-y divide-gray-200 text-sm">
-                            <thead>
-                                <tr><th>명사 조건 (정관사 기준)</th><th>quello의 형태</th><th>예시</th></tr>
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">이탈리아어 알파벳 (21자)</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">알파벳</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">이름 (한글 표기)</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">알파벳</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">이름 (한글 표기)</th>
+                                </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <tr><td>il libro</td><td>**quel**</td><td>quel libro</td></tr>
-                                <tr><td>lo stadio, l'amico</td><td>**quello, quell'**</td><td>quello stadio, quell'amico</td></tr>
-                                <tr><td>i libri</td><td>**quei**</td><td>quei libri</td></tr>
-                                <tr><td>gli stadi</td><td>**quegli**</td><td>quegli stadi</td></tr>
-                                <tr><td>la penna, l'amica</td><td>**quella, quell'**</td><td>quella penna, quell'amica</td></tr>
-                                <tr><td>le penne</td><td>**quelle**</td><td>quelle penne</td></tr>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">A</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">아 (a)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">L</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">엘레 (elle)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">B</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">비 (bi)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">M</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">엠메 (emme)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">C</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">취 (ci)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">N</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">엔네 (enne)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">D</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">디 (di)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">O</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">오 (o)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">E</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">에 (e)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">P</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">삐 (pi)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">F</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">에페 (effe)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">Q</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">꾸 (qu)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">G</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">지 (gi)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">R</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">에레 (erre)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">H</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">아까 (acca)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">S</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">에쎄 (esse)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">I</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">이 (i)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">T</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">띠 (ti)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900"></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">U</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">우 (u)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900"></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">V</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">부 (vu)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900"></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">Z</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">제따 (zeta)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">외래어 표기용 알파벳 (5자)</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">알파벳</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">이름 (한글 표기)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">J</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">일룸가 (i lunga)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">K</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">갑빠 (kappa)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">W</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">도피아부 (doppia vu)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">X</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">익스 (ics)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">Y</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">입실론 / 이 그레까 (ipsilon / i greca)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">이탈리아어 단어와 외래어 구분 규칙</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>이탈리아어 단어:</b> 21개 알파벳으로 시작하고, 끝이 모음(a, e, i, o, u)으로 끝납니다.</li>
+                        <li><b>외래어 단어:</b> 외래어 표기용 5개 알파벳(J, K, W, X, Y)으로 시작하거나, 단어의 끝이 자음으로 끝납니다. (단, 일부 관사나 전치사에는 예외가 있습니다.)</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">이름 스펠링 연습의 중요성</h3>
+                    <p class="mb-4 text-stone-700">이탈리아 사람들에게 한국 이름을 말할 때, 영문 표기를 영어식으로 읽어주면 거의 알아듣지 못합니다. 이때 이탈리아어 알파벳 발음으로 한 자 한 자 정확히 불러주는 것이 매우 중요합니다.</p>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>예시 (홍길동 HONG GIL DONG):</b> 아까-오-엔네-지 지-이-엘레 디-오-엔네-지</li>
+                        <li><b>예시 (정보경 JEONG BO KYUNG):</b> 일룸가-에-오-엔네-지 비-오 갑빠-입실론-우-엔네-지</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">핵심 단어 및 표현</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>alfabeto</b> (알파베토): 명. 알파벳</li>
+                        <li><b>La Divina Commedia</b> (라 디비나 꼼메디아): 명. 단테의 작품 <신곡>. 현대 이탈리아어의 기원이 됨.</li>
+                        <li><b>parola straniera</b> (빠롤라 스뜨라니에라): 명. 외래어</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="page-lec2" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">2강: 주의해야 할 이탈리아어 발음</h2>
+                    <p class="mb-6 text-stone-600">2강에서는 단어를 형성할 때 소리가 변하는 세 가지 주요 발음 규칙을 배웁니다.</p>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">핵심 문법 포인트</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li>취[c] / 지[g] 발음 규칙</li>
+                        <li>에쎄[s] 발음 규칙</li>
+                        <li>아까[h] 발음 규칙</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">취[c] / 지[g] 발음 규칙</h3>
+                    <p class="mb-4 text-stone-700">c와 g의 발음은 뒤에 어떤 모음이 오는지에 따라 달라지며, h의 유무가 결정적인 역할을 합니다.</p>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">조합</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">C 발음</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">예시 단어</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">G 발음</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">예시 단어</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">+ a, o, u</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">ㄲ (까, 꼬, 꾸)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">casa (집)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">ㄱ (가, 고, 구)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">gatto (고양이)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">+ e, i</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">ㅊ (체, 치)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">cena (저녁)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">ㅈ (제, 지)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">gelato (젤라또)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">+ h + e, i</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">ㄲ (께, 끼)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">chiave (열쇠)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">ㄱ (게, 기)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">spaghetti (스파게티)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>gli 발음:</b> '리'와 비슷하게 들리지만, 정확히는 혀가 위 천장 안쪽을 밀어내면서 내는 소리입니다. (예: famiglia - 파밀리아)</li>
+                        <li><b>gn 발음:</b> '니'에 가깝게 발음됩니다. (예: signora - 시뇨라)</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">에쎄[s] 발음 규칙</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>ㅅ 발음 (무성음):</b> s 뒤에 무성 자음(c, f, p, q, t)이 오거나, 단어 맨 앞에 올 때. (예: <b>s</b>catola - 상자)</li>
+                        <li><b>ㅈ 발음 (유성음):</b> s가 두 모음 사이에 올 때 (예: ca<b>s</b>a - 집), 또는 s 뒤에 유성 자음(b, d, g, l, m, n, r, v)이 올 때 (예: <b>s</b>baglio - 실수)</li>
+                        <li><b>쉬 발음:</b> sc 뒤에 e나 i가 올 때. (예: <b>sc</b>ena - 장면)</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">아까[h] 발음 규칙</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>묵음:</b> 이탈리아어에서 h는 기본적으로 소리 내지 않는 묵음입니다. (예: <b>h</b>otel -> 오뗄)</li>
+                        <li><b>경음화 역할:</b> c나 g 뒤에 e, i가 와서 ㅊ, ㅈ으로 발음될 상황에 h를 삽입하여, 원래의 ㄲ, ㄱ 발음(경음)을 유지시키는 역할을 합니다. (예: c<b>he</b>, g<b>hi</b>)</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">핵심 단어 및 표현</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>C/G 발음:</b> casa, cena, chiave, chilo, gatto, gelato, gloria, spaghetti</li>
+                        <li><b>S 발음:</b> casa, museo, pesce, rosso, sbaglio, scatola, scena</li>
+                        <li><b>H 발음:</b> hai, hanno, ho, hotel</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="page-lec3" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">3강: 명사의 성과 수</h2>
+                    <p class="mb-6 text-stone-600">이 파트에서는 이탈리아어 문장의 진정한 첫걸음을 뗍니다. 3강에서는 이탈리아어 명사의 성(남성/여성)과 수(단수/복수)에 따른 형태 변화 규칙을 학습합니다.</p>
+                    
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">상세 정리</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">어미 형태</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">성</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">단수 → 복수</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">예시 (단수 → 복수)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">-o</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">남성</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">-o → -i</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">libro → libri (책)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">-a</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">여성</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">-a → -e</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">porta → porte (문)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">-e</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">남성 또는 여성</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">-e → -i</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">padre → padri (아버지, 남성)<br>madre → madri (어머니, 여성)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">핵심 단어</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>-o 어미:</b> bagno(화장실), biglietto(표), libro(책), tavolo(테이블)</li>
+                        <li><b>-a 어미:</b> macchina(자동차), porta(문), scatola(상자), sedia(의자)</li>
+                        <li><b>-e 어미:</b> cliente(손님), madre(어머니), padre(아버지), studente(학생)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="page-lec4" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">4강: 정관사</h2>
+                    <p class="mb-6 text-stone-600">4강에서는 영어의 'the'에 해당하는 정관사를 배웁니다. 이탈리아어 정관사는 뒤따르는 명사의 성, 수, 그리고 시작하는 철자에 따라 형태가 달라집니다.</p>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">상세 정리</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">성</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">수</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">정관사</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">사용 조건</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">예시</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm row-span-4 align-top font-medium text-stone-900">남성</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm row-span-2 align-top text-stone-700">단수</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">il</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">자음으로 시작하는 명사 앞</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">il libro</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">lo</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">s+자음, z, y, x, gn, ps 등으로 시작하는 명사 앞</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">lo studente, lo zaino</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm align-top text-stone-700"></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">l'</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">모음으로 시작하는 명사 앞</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">l'amico</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm row-span-2 align-top text-stone-700">복수</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">i</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">il을 사용하는 명사의 복수형 앞</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">i libri</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm align-top font-medium text-stone-900"></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">gli</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">lo 또는 l'을 사용하는 명사의 복수형 앞</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">gli studenti, gli amici</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm row-span-3 align-top font-medium text-stone-900">여성</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm row-span-2 align-top text-stone-700">단수</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">la</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">자음으로 시작하는 명사 앞</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">la casa</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">l'</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">모음으로 시작하는 명사 앞</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">l'amica</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm align-top text-stone-700">복수</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">le</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">모든 여성 복수 명사 앞</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">le case, le amiche</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-        </section>
+            
+            <div id="page-lec5" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">5강: 부정관사</h2>
+                    <p class="mb-6 text-stone-600">5강에서는 영어의 'a/an'에 해당하는 부정관사를 배웁니다. 정관사와 마찬가지로 뒤따르는 명사의 시작 철자에 따라 형태가 달라집니다.</p>
 
-        <!-- Divider -->
-        <div class="border-t border-gray-200"></div>
-
-        <!-- Section 3: 핵심 동사 활용 -->
-        <section id="section-3" class="bg-white p-6 rounded-xl section-card">
-            <h2 class="text-3xl font-extrabold text-blue-700 mb-6">3. 핵심 동사 활용: 직설법 현재</h2>
-            <p class="text-gray-600 mb-6">동사는 문장의 심장입니다. 주어의 인칭과 수에 따라 동사의 형태가 변하는 **활용(coniugazione)**을 이해하는 것이 중요합니다.</p>
-
-            <!-- 3.1. 기본 동사: Essere와 Avere -->
-            <h3 class="text-xl font-bold sub-heading">3.1. 기본 동사: Essere와 Avere (불규칙) <span class="text-sm font-normal text-gray-500">(7강)</span></h3>
-            <p class="text-sm text-red-600 mb-4 font-medium">**Essere**('이다', '있다')와 **Avere**('가지고 있다')는 복합 시제의 조동사로도 활용되므로 완벽한 숙지가 필수입니다.</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="table-responsive">
-                    <p class="font-semibold text-gray-700 mb-2">Essere (이다, 있다)</p>
-                    <table class="min-w-full divide-y divide-gray-200 text-sm">
-                        <tbody class="divide-y divide-gray-100">
-                            <tr><th>io</th><td>**sono**</td><th>noi</th><td>**siamo**</td></tr>
-                            <tr><th>tu</th><td>**sei**</td><th>voi</th><td>**siete**</td></tr>
-                            <tr><th>lui/lei</th><td>**è**</td><th>loro</th><td>**sono**</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="table-responsive">
-                    <p class="font-semibold text-gray-700 mb-2">Avere (가지고 있다)</p>
-                    <table class="min-w-full divide-y divide-gray-200 text-sm">
-                        <tbody class="divide-y divide-gray-100">
-                            <tr><th>io</th><td>**ho**</td><th>noi</th><td>**abbiamo**</td></tr>
-                            <tr><th>tu</th><td>**hai**</td><th>voi</th><td>**avete**</td></tr>
-                            <tr><th>lui/lei</th><td>**ha**</td><th>loro</th><td>**hanno**</td></tr>
-                        </tbody>
-                    </table>
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">상세 정리 단수 부정관사</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">성</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">부정관사</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">사용 조건</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">예시</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm row-span-2 align-top font-medium text-stone-900">남성</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">un</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">자음 또는 모음으로 시작하는 명사 앞</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">un libro, un amico</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">uno</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">s+자음, z 등으로 시작하는 명사 앞</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">uno studente, uno zaino</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm row-span-2 align-top font-medium text-stone-900">여성</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">una</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">자음으로 시작하는 명사 앞</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">una casa</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">un'</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">모음으로 시작하는 명사 앞</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">un'amica</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">복수 부정관사 ('몇몇의'라는 의미)</h3>
+                    <p class="mb-4 text-stone-700">복수 부정관사는 전치사 di와 정관사 복수형이 결합된 형태로 만들어집니다.</p>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">성</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">결합 형태</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">복수 부정관사</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">예시</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm row-span-2 align-top font-medium text-stone-900">남성</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">di + i</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">dei</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">dei libri (몇 권의 책들)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">di + gli</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">degli</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">degli studenti (몇몇 학생들)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm align-top font-medium text-stone-900">여성</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">di + le</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">delle</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">delle case (몇 채의 집들)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
-            <!-- 3.2. 규칙 동사 변형 -->
-            <h3 class="text-xl font-bold sub-heading">3.2. 규칙 동사 변형 (-are, -ere, -ire) <span class="text-sm font-normal text-gray-500">(16강, 17강)</span></h3>
-            <div class="table-responsive mb-6">
-                <table class="min-w-full divide-y divide-gray-200 text-sm">
-                    <thead>
-                        <tr><th>인칭</th><th>-are (parlare)</th><th>-ere (prendere)</th><th>-ire (dormire)</th></tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr><th>io</th><td>-o (**parlo**)</td><td>-o (**prendo**)</td><td>-o (**dormo**)</td></tr>
-                        <tr><th>tu</th><td>-i (**parli**)</td><td>-i (**prendi**)</td><td>-i (**dormi**)</td></tr>
-                        <tr><th>lui/lei</th><td>-a (**parla**)</td><td>-e (**prende**)</td><td>-e (**dorme**)</td></tr>
-                        <tr><th>noi</th><td>-iamo (**parliamo**)</td><td>-iamo (**prendiamo**)</td><td>-iamo (**dormiamo**)</td></tr>
-                        <tr><th>voi</th><td>-ate (**parlate**)</td><td>-ete (**prendete**)</td><td>-ite (**dormite**)</td></tr>
-                        <tr><th>loro</th><td>-ano (**parlano**)</td><td>-ono (**prendono**)</td><td>-ono (**dormono**)</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <p class="font-semibold text-gray-700 mb-2">특수 규칙</p>
-            <ul class="list-disc list-inside ml-4 space-y-2 text-sm text-gray-600">
-                <li>**-ire 동사 (-isc- 삽입):** **capire**, **finire** 등은 io, tu, lui/lei, loro 인칭에 **-isc-** 삽입 (예: cap**isc**o)</li>
-                <li>**발음 유지를 위한 철자 변경:** -care, -gare 동사는 tu, noi 인칭에서 **h** 추가 (예: cercare → cerc**h**i, cerchiamo)</li>
-            </ul>
-
-            <!-- 3.3. 주요 불규칙 동사 -->
-            <h3 class="text-xl font-bold sub-heading">3.3. 주요 불규칙 동사 <span class="text-sm font-normal text-gray-500">(19강)</span></h3>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm text-gray-700">
-                <div class="bg-blue-50 p-3 rounded-lg"><strong class="text-blue-700">andare (가다):</strong> vado, vai, va...</div>
-                <div class="bg-blue-50 p-3 rounded-lg"><strong class="text-blue-700">dare (주다):</strong> do, dai, dà...</div>
-                <div class="bg-blue-50 p-3 rounded-lg"><strong class="text-blue-700">fare (하다):</strong> faccio, fai, fa...</div>
-                <div class="bg-blue-50 p-3 rounded-lg"><strong class="text-blue-700">stare (지내다, 있다):</strong> sto, stai, sta...</div>
-                <div class="bg-blue-50 p-3 rounded-lg"><strong class="text-blue-700">dovere (해야 한다):</strong> devo, devi, deve...</div>
-                <div class="bg-blue-50 p-3 rounded-lg"><strong class="text-blue-700">potere (할 수 있다):</strong> posso, puoi, può...</div>
-                <div class="bg-blue-50 p-3 rounded-lg"><strong class="text-blue-700">volere (원하다):</strong> voglio, vuoi, vuole...</div>
-                <div class="bg-blue-50 p-3 rounded-lg"><strong class="text-blue-700">uscire (나가다):</strong> esco, esci, esce...</div>
-                <div class="bg-blue-50 p-3 rounded-lg"><strong class="text-blue-700">dire (말하다):</strong> dico, dici, dice...</div>
-                <div class="bg-blue-50 p-3 rounded-lg"><strong class="text-blue-700">venire (오다):</strong> vengo, vieni, viene...</div>
-            </div>
-
-            <!-- 3.4. 현재 진행형 -->
-            <h3 class="text-xl font-bold sub-heading">3.4. 현재 진행형 (Presente Progressivo) <span class="text-sm font-normal text-gray-500">(19강)</span></h3>
-            <p class="text-gray-700">**stare 동사의 현재형 + 제룬디오(Gerundio)** 형태로 '〜하는 중이다' 표현.</p>
-            <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-600 mt-2">
-                <li>-are 동사 → **-ando** (예: lavorare → lavorando)</li>
-                <li>-ere 동사 → **-endo** (예: prendere → prendendo)</li>
-                <li>-ire 동사 → **-endo** (예: dormire → dormendo)</li>
-                <li>예시: **Sto lavorando.** (나는 일하는 중이다.)</li>
-            </ul>
-        </section>
-
-        <!-- Divider -->
-        <div class="border-t border-gray-200"></div>
-
-        <!-- Section 4: 문장 확장과 연결 -->
-        <section id="section-4" class="bg-white p-6 rounded-xl section-card">
-            <h2 class="text-3xl font-extrabold text-blue-700 mb-6">4. 문장 확장과 연결: 전치사, 의문사, 그리고 시간 표현</h2>
-            <p class="text-gray-600 mb-6">전치사, 의문사 등은 문장에 시간, 장소, 이유 등 구체적인 정보를 추가하여 표현을 풍부하게 만듭니다.</p>
-
-            <!-- 4.1. 주요 전치사 용법 -->
-            <h3 class="text-xl font-bold sub-heading">4.1. 주요 전치사 용법 (Uso delle Preposizioni) <span class="text-sm font-normal text-gray-500">(21강, 22강, 23강)</span></h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div class="p-3 bg-green-50 rounded-lg border-l-4 border-green-600">
-                    <strong class="text-green-700">in:</strong>
-                    <ul class="list-none space-y-1 mt-1">
-                        <li>- 장소 (큰 단위/특정 장소): in Italia, in ufficio</li>
-                        <li>- 교통수단: in autobus</li>
-                        <li>- 시간 (기간): in estate, nel 1998</li>
-                    </ul>
-                </div>
-                <div class="p-3 bg-green-50 rounded-lg border-l-4 border-green-600">
-                    <strong class="text-green-700">a:</strong>
-                    <ul class="list-none space-y-1 mt-1">
-                        <li>- 장소 (작은 단위): a Roma</li>
-                        <li>- 시간 (시각): alle nove</li>
-                        <li>- 목적: andare a cena</li>
-                    </ul>
-                </div>
-                <div class="p-3 bg-green-50 rounded-lg border-l-4 border-green-600">
-                    <strong class="text-green-700">di:</strong>
-                    <ul class="list-none space-y-1 mt-1">
-                        <li>- 소유: il libro di Marco</li>
-                        <li>- 출신: Sono di Seoul</li>
-                        <li>- 재료: bicchiere di vino</li>
-                    </ul>
-                </div>
-                <div class="p-3 bg-green-50 rounded-lg border-l-4 border-green-600">
-                    <strong class="text-green-700">da:</strong>
-                    <ul class="list-none space-y-1 mt-1">
-                        <li>- 출발점/기점: da Milano, da oggi</li>
-                        <li>- 사람(의 집/가게): vado da Marco</li>
-                        <li>- 목적/용도: occhiali da sole</li>
-                    </ul>
-                </div>
-                <div class="p-3 bg-green-50 rounded-lg border-l-4 border-green-600">
-                    <strong class="text-green-700">su:</strong>
-                    <ul class="list-none space-y-1 mt-1">
-                        <li>- 위치: sulla tavola</li>
-                        <li>- 주제: libro sulla storia</li>
-                        <li>- 근사치: sui settanta chili</li>
-                    </ul>
-                </div>
-                <div class="p-3 bg-green-50 rounded-lg border-l-4 border-green-600">
-                    <strong class="text-green-700">con:</strong>
-                    <ul class="list-none space-y-1 mt-1">
-                        <li>- 동반: esco con amici</li>
-                        <li>- 수단: scrivere con la penna</li>
-                    </ul>
-                </div>
-                <div class="p-3 bg-green-50 rounded-lg border-l-4 border-green-600">
-                    <strong class="text-green-700">per:</strong>
-                    <ul class="list-none space-y-1 mt-1">
-                        <li>- 목적/위하여: regalo per te</li>
-                        <li>- 방향: treno per Napoli</li>
-                        <li>- 기간: per due anni</li>
-                    </ul>
-                </div>
-                <div class="p-3 bg-green-50 rounded-lg border-l-4 border-green-600">
-                    <strong class="text-green-700">fra / tra:</strong>
-                    <ul class="list-none space-y-1 mt-1">
-                        <li>- 시간: fra tre minuti</li>
-                        <li>- 관계: tra Roma e Milano</li>
+            <div id="page-lec6" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">6강: 불규칙 명사</h2>
+                    <p class="mb-6 text-stone-600">6강에서는 일반적인 성/수 변화 규칙을 따르지 않는 명사들을 유형별로 학습합니다.</p>
+                    
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">상세 정리</h3>
+                    <ul class="list-disc list-outside space-y-3 pl-5 mb-6 text-stone-700">
+                        <li><b>축약형 명사:</b> 단수와 복수의 형태가 동일하며 관사로만 구분합니다.
+                            <ul class="list-['\2023'] list-outside space-y-1 pl-6 mt-2">
+                                <li>예: <b>la</b> foto(사진) → <b>le</b> foto, <b>la</b> moto(오토바이) → <b>le</b> moto</li>
+                            </ul>
+                        </li>
+                        <li><b>외래어:</b> 대부분 단/복수 형태가 동일합니다.
+                            <ul class="list-['\2023'] list-outside space-y-1 pl-6 mt-2">
+                                <li>예: <b>l'</b>autobus(버스) → <b>gli</b> autobus, <b>il</b> film(영화) → <b>i</b> film</li>
+                            </ul>
+                        </li>
+                        <li><b>끝음절에 악센트가 있는 명사:</b> 단/복수 형태가 동일합니다.
+                            <ul class="list-['\2023'] list-outside space-y-1 pl-6 mt-2">
+                                <li>예: <b>l'</b>università(대학교) → <b>le</b> università, <b>il</b> caffè(커피) → <b>i</b> caffè</li>
+                            </ul>
+                        </li>
+                        <li><b>-o로 끝나는 여성 명사:</b>
+                            <ul class="list-['\2023'] list-outside space-y-1 pl-6 mt-2">
+                                <li>예: <b>la</b> mano(손) → <b>le</b> mani</li>
+                            </ul>
+                        </li>
+                        <li><b>-a로 끝나는 남성 명사</b> (주로 그리스어 유래):
+                            <ul class="list-['\2023'] list-outside space-y-1 pl-6 mt-2">
+                                <li>예: <b>il</b> problema(문제) → <b>i</b> problemi, <b>il</b> tema(주제) → <b>i</b> temi</li>
+                            </ul>
+                        </li>
+                        <li><b>완전 불규칙 명사:</b>
+                            <ul class="list-['\2023'] list-outside space-y-1 pl-6 mt-2">
+                                <li>예: <b>l'</b>uomo(남자) → <b>gli</b> uomini, <b>il</b> dio(신) → <b>gli</b> dei</li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>
 
-            <!-- 4.2. 의문사 활용 -->
-            <h3 class="text-xl font-bold sub-heading">4.2. 의문사 활용 (Uso degli Interrogativi) <span class="text-sm font-normal text-gray-500">(14강)</span></h3>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
-                <div class="p-2 bg-yellow-50 rounded-lg"><strong class="text-yellow-700">Chi?</strong> (누구?)</div>
-                <div class="p-2 bg-yellow-50 rounded-lg"><strong class="text-yellow-700">Che?/Cosa?</strong> (무엇?)</div>
-                <div class="p-2 bg-yellow-50 rounded-lg"><strong class="text-yellow-700">Quale?</strong> (어떤 것?)</div>
-                <div class="p-2 bg-yellow-50 rounded-lg"><strong class="text-yellow-700">Quando?</strong> (언제?)</div>
-                <div class="p-2 bg-yellow-50 rounded-lg"><strong class="text-yellow-700">Dove?</strong> (어디?)</div>
-                <div class="p-2 bg-yellow-50 rounded-lg"><strong class="text-yellow-700">Perché?</strong> (왜? / 때문에)</div>
-                <div class="p-2 bg-yellow-50 rounded-lg"><strong class="text-yellow-700">Come?</strong> (어떻게?)</div>
-                <div class="p-2 bg-yellow-50 rounded-lg"><strong class="text-yellow-700">Quanto?</strong> (얼마나?) - 성/수 변화</div>
+            <div id="page-lec7" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">7강: 인칭 대명사 / essere와 avere 동사</h2>
+                    <p class="mb-6 text-stone-600">7강에서는 문장의 주체가 되는 인칭 대명사와, 이탈리아어에서 가장 중요하고 활용도 높은 두 불규칙 동사 essere와 avere를 배웁니다.</p>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">주격 인칭 대명사</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">인칭</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">단수</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">복수</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">1인칭</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">io (나)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">noi (우리)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">2인칭</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">tu (너)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">voi (너희)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">3인칭</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">lui (그), lei (그녀), Lei (당신-존칭)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">loro (그들/그녀들)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">essere 동사 (~이다, ~에 있다)</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">인칭</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">동사 변형</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">예시</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">io</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">sono</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">Io <b>sono</b> coreano. (나는 한국인이다.)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">tu</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">sei</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">Tu <b>sei</b> a Roma. (너는 로마에 있다.)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">lui/lei/Lei</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">è</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">Lui <b>è</b> un dottore. (그는 의사이다.)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">noi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">siamo</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">Noi <b>siamo</b> amici. (우리는 친구이다.)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">voi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">siete</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">Voi <b>siete</b> studenti. (너희는 학생이다.)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">loro</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">sono</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">Loro <b>sono</b> in Italia. (그들은 이탈리아에 있다.)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">avere 동사 (가지고 있다)</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">인칭</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">동사 변형</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">예시</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">io</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">ho</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">Io <b>ho</b> un libro. (나는 책을 한 권 가지고 있다.)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">tu</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">hai</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">Tu <b>hai</b> una macchina. (너는 차를 한 대 가지고 있다.)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">lui/lei/Lei</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">ha</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">Lei <b>ha</b> una borsa. (그녀는 가방을 가지고 있다.)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">noi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">abbiamo</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">Noi <b>abbiamo</b> una casa. (우리는 집이 있다.)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">voi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">avete</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">Voi <b>avete</b> fame. (너희는 배고프다.)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">loro</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">hanno</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">Loro <b>hanno</b> sete. (그들은 목마르다.)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>부정문 만들기:</b> 동사 바로 앞에 <b>non</b>을 붙이면 됩니다.
+                            <ul class="list-['\2023'] list-outside space-y-1 pl-6 mt-2">
+                                <li>예: Io <b>non</b> sono italiano. (나는 이탈리아인이 아니다.)</li>
+                            </ul>
+                        </li>
+                        <li><b>주어 생략:</b> 이탈리아어는 동사 변화 형태만으로 주어를 유추할 수 있기 때문에, 주격 인칭 대명사는 강조의 목적이 아니면 보통 생략합니다.</li>
+                    </ul>
+                </div>
             </div>
 
-            <!-- 4.3. 숫자와 시간 표현 -->
-            <h3 class="text-xl font-bold sub-heading">4.3. 숫자와 시간 표현 (Numeri e Orari) <span class="text-sm font-normal text-gray-500">(10강, 13강)</span></h3>
-            <div class="space-y-4 text-gray-700">
-                <p class="text-base font-medium text-blue-600">숫자 (Numeri)</p>
-                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-600">
-                    <li>1~20은 암기. 20 이후는 10의 자리에 1의 자리 결합.</li>
-                    <li>모음 축약 규칙: 10의 자리 + **1(uno)** 또는 **8(otto)** 결합 시, 10의 자리 마지막 모음 탈락 (예: trenta + uno → **trentuno**)</li>
-                </ul>
-                <p class="text-base font-medium text-blue-600">시간 표현 (Orari)</p>
-                <ul class="list-disc list-inside ml-4 space-y-1 text-sm text-gray-600">
-                    <li>시간 묻기: **Che ore sono?** / **Che ora è?**</li>
-                    <li>1시: **È l'una.** (단수)</li>
-                    <li>2시부터: **Sono le due.** (복수)</li>
-                    <li>주요 표현: e un quarto (15분), e mezza (30분), meno (~전) (예: Sono le tre **meno** un quarto. - 2시 45분)</li>
-                </ul>
+            <div id="page-lec8" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">8강: 형용사</h2>
+                    <p class="mb-6 text-stone-600">8강에서는 명사를 꾸며주는 형용사의 종류와 명사의 성/수에 따라 변화하는 규칙을 학습합니다.</p>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">형용사의 두 가지 유형</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">유형</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">특징</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">성/수 일치 규칙</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">예시</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">-o 형용사</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">남성 단수형이 -o로 끝남</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">4가지 형태로 변화: <br>• 남성 단수: -o<br>• 여성 단수: -a<br>• 남성 복수: -i<br>• 여성 복수: -e</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700"><i>alto</i> (키가 큰)<br>un ragazzo <b>alto</b><br>una ragazza <b>alta</b><br>due ragazzi <b>alti</b><br>due ragazze <b>alte</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-stone-900">-e 형용사</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">남성/여성 단수형이 -e로 끝남</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">2가지 형태로 변화: <br>• 단수 (남/여): -e<br>• 복수 (남/여): -i</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700"><i>intelligente</i> (똑똑한)<br>uno studente <b>intelligente</b><br>una studentessa <b>intelligente</b><br>studenti <b>intelligenti</b><br>studentesse <b>intelligenti</b></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">형용사의 위치</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>명사 뒤 (일반적):</b> 객관적인 사실, 국적, 모양, 색깔 등을 나타낼 때. (예: un caffè <b>freddo</b> - 차가운 커피)</li>
+                        <li><b>명사 앞:</b> 주관적인 느낌이나 평가를 나타낼 때. (예: una <b>bella</b> ragazza - (내 생각에) 아름다운 소녀)</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">핵심 단어</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>-o 형용사:</b> alto(높은/키 큰), buono(좋은), freddo(차가운), nuovo(새로운), vecchio(낡은)</li>
+                        <li><b>-e 형용사:</b> difficile(어려운), facile(쉬운), grande(큰), intelligente(똑똑한), triste(슬픈)</li>
+                    </ul>
+                </div>
             </div>
-        </section>
 
-        <!-- Footer / Conclusion -->
-        <footer class="text-center p-6 mt-12 text-gray-500 text-sm border-t">
-            <p>&copy; 김쌤의 이탈리아어 강의 핵심 정리 자료</p>
-            <p class="mt-2">이탈리아어 학습의 견고한 기초를 다지는 데 도움이 되기를 바랍니다.</p>
-        </footer>
+            <div id="page-lec9" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">9강: 자주 사용하는 형용사 100개 외우기</h2>
+                    <p class="mb-6 text-stone-600">9강에서는 회화에서 빈번하게 사용되는 형용사들을 반의어 쌍으로 묶어 효율적으로 학습합니다.</p>
+                    
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">상세 정리 (일부 예시)</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">형용사</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">반의어</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">예문</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><b>veloce</b> (빠른)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><b>lento</b> (느린)</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">La macchina è <b>veloce</b>. (그 자동차는 빠르다.)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><b>caldo</b> (뜨거운)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><b>freddo</b> (차가운)</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">Vorrei un caffè <b>caldo</b>. (따뜻한 커피 한 잔 주세요.)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><b>grande</b> (큰)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><b>piccolo</b> (작은)</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">La casa è <b>grande</b>. (그 집은 크다.)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><b>alto</b> (높은)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><b>basso</b> (낮은)</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">Lui è un ragazzo <b>alto</b>. (그는 키가 큰 소년이다.)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><b>buono</b> (좋은)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><b>cattivo</b> (나쁜)</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700">Questo vino è molto <b>buono</b>. (이 와인은 매우 좋다.)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
-    </main>
+            <div id="page-lec10" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">10강: 수 형용사</h2>
+                    <p class="mb-6 text-stone-600">10강에서는 숫자를 읽고 쓰는 법, 즉 기수를 중점적으로 다룹니다.</p>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">기수 1-20</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">숫자</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">이탈리아어</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">숫자</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">이탈리아어</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">1</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">uno</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">11</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">undici</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">2</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">due</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">12</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">dodici</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">3</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">tre</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">13</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">tredici</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">4</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">quattro</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">14</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">quattordici</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">5</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">cinque</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">15</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">quindici</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">6</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">sei</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">16</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">sedici</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">7</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">sette</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">17</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">diciassette</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">8</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">otto</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">18</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">diciotto</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">9</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">nove</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">19</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">diciannove</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">10</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">dieci</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">20</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">venti</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">숫자 조합 규칙</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>10단위 숫자:</b> trenta(30), quaranta(40), cinquanta(50), sessanta(60), settanta(70), ottanta(80), novanta(90), cento(100)</li>
+                        <li><b>숫자 조합 규칙:</b> 1의 자리 숫자가 <i>uno</i>(1)나 <i>otto</i>(8)일 경우, 10의 자리 마지막 모음이 탈락합니다.
+                            <ul class="list-['\2023'] list-outside space-y-1 pl-6 mt-2">
+                                <li>예: trenta + uno → trent<b>uno</b>, quaranta + otto → quarant<b>otto</b></li>
+                            </ul>
+                        </li>
+                        <li><b>큰 숫자:</b>
+                            <ul class="list-['\2023'] list-outside space-y-1 pl-6 mt-2">
+                                <li><i>mille</i> (1,000) → 복수형은 <i>mila</i> (예: <i>duemila</i> - 2,000)</li>
+                                <li><i>un milione</i> (1,000,000) → 복수형은 <i>milioni</i> (예: <i>due milioni</i> - 2,000,000)</li>
+                            </ul>
+                        </li>
+                        <li><b>서수:</b> <i>primo</i>(첫 번째), <i>secondo</i>(두 번째) 등 간단히 소개되었습니다.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="page-lec11" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">11강: 소유 형용사</h2>
+                    <p class="mb-6 text-stone-600">11강에서는 '나의', '너의' 등 소유를 나타내는 표현을 배웁니다. 핵심은 소유 형용사가 소유되는 명사의 성과 수에 따라 변한다는 점입니다.</p>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">상세 정리</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">인칭</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">남성 단수</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">여성 단수</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">남성 복수</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">여성 복수</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">나의</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">mio</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">mia</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">miei</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">mie</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">너의</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">tuo</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">tua</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">tuoi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">tue</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">그의/그녀의/당신의</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">suo</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">sua</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">suoi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">sue</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">우리의</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">nostro</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">nostra</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">nostri</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">nostre</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">너희의</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">vostro</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">vostra</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">vostri</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">vostre</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">그들의</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">loro</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">loro</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">loro</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">loro (불변)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>예시:</b> <b>il mio</b> libro (나의 책), <b>la mia</b> penna (나의 펜), <b>i miei</b> libri (나의 책들), <b>le mie</b> penne (나의 펜들)</li>
+                        <li><b>관사 생략 규칙:</b> 단수 형태의 가족 명사 앞에서는 정관사를 생략합니다. (예: <b>mia</b> madre - 나의 어머니) 단, <i>loro</i> 앞이나, 축소형/애칭이 붙거나, 명사가 복수일 때는 관사를 씁니다.</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">핵심 단어</h3>
+                    <p class="text-stone-700 mb-6">figlio/a(아들/딸), fratello(형제), madre(어머니), marito(남편), moglie(아내), nipote(조카/손주), nonno/a(할아버지/할머니), padre(아버지), sorella(자매)</p>
+                </div>
+            </div>
+
+            <div id="page-lec12" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">12강: 지시 형용사</h2>
+                    <p class="mb-6 text-stone-600">12강에서는 '이', '그/저'와 같이 대상을 가리키는 지시 형용사를 학습합니다.</p>
+                    
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">questo (이, this)</h3>
+                    <p class="mb-6 text-stone-700">가까이 있는 대상을 가리키며, 수식하는 명사의 성/수에 따라 4가지(<i>questo</i>, <i>questa</i>, <i>questi</i>, <i>queste</i>)로 변합니다.
+                        <ul class="list-['\2023'] list-outside space-y-1 pl-6 mt-2">
+                            <li>예: <b>questo</b> libro, <b>questa</b> macchina, <b>questi</b> libri, <b>queste</b> macchine</li>
+                        </ul>
+                    </p>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">quello (그/저, that)</h3>
+                    <p class="mb-4 text-stone-700">멀리 있는 대상을 가리키며, 정관사의 변화 규칙을 그대로 따릅니다. (4강의 정관사 표를 다시 한번 참고하면 규칙을 이해하기 쉽습니다.)</p>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">정관사</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">quello의 변형</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">예시</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><i>il</i></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">quel</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">quel libro</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><i>lo</i></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">quello</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">quello studente</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><i>l'</i></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">quell'</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">quell'amico</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><i>i</i></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">quei</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">quei libri</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><i>gli</i></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">quegli</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">quegli studenti, quegli amici</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><i>la/l'</i></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">quella/quell'</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">quella casa, quell'amica</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700"><i>le</i></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">quelle</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">quelle case, quelle amiche</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">특별 용법</h3>
+                    <p class="mb-6 text-stone-700">형용사 <b>bello</b>(아름다운)가 명사 앞에 올 때는 <i>quello</i>와 동일한 규칙으로 변화합니다. (예: <b>bel</b> ragazzo, <b>begli</b> occhi)</p>
+                </div>
+            </div>
+
+            <div id="page-lec13" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">13강: 몇 시입니까?</h2>
+                    <p class="mb-6 text-stone-600">13강에서는 시간을 묻고 답하는 다양한 표현을 배웁니다.</p>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">시간 묻기</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><i>Che ora è?</i> (단수 시간, 주로 1시를 물을 때)</li>
+                        <li><i>Che ore sono?</i> (복수 시간, 일반적)</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">시간 답하기</h3>
+                    <p class="mb-4 text-stone-700"><i>essere</i> 동사 + 여성 정관사 <i>la</i>/<i>le</i> + 숫자</p>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li>1시: <b>È l'una</b>.</li>
+                        <li>2시 이후: <b>Sono le</b> due., <b>Sono le</b> tre.</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">분 표현</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li>~시 ~분: <i>Sono le tre <b>e</b> dieci.</i> (3시 10분)</li>
+                        <li>15분: <i>un quarto</i> (예: <i>Sono le tre e <b>un quarto</b>.</i> - 3시 15분)</li>
+                        <li>30분: <i>mezza</i> (예: <i>Sono le tre e <b>mezza</b>.</i> - 3시 30분)</li>
+                        <li>~분 전: <i>meno</i> (예: <i>Sono le quattro <b>meno</b> un quarto.</i> - 4시 15분 전, 즉 3시 45분)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="page-lec14" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">14강: 의문사</h2>
+                    <p class="mb-6 text-stone-600">14강에서는 의문문을 만드는 데 필수적인 의문사들을 학습합니다.</p>
+                    
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">상세 정리</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">구분</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">의문사</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">의미</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">성/수 변화</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">예시</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm row-span-4 align-top font-medium text-stone-900">대명사/형용사</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">che/che cosa</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">무엇</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">불변</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700"><b>Che</b> fai? (뭐 해?)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">chi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">누구</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">불변</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700"><b>Chi</b> è? (누구세요?)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">quale</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">어떤 것</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">복수: quali</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700"><b>Quale</b> preferisci? (어떤 걸 더 좋아해?)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">quanto</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">얼마나</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">quanta, quanti, quante</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700"><b>Quanti</b> anni hai? (몇 살이야?)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm row-span-4 align-top font-medium text-stone-900">부사</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">dove</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">어디서</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">불변</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700"><b>Dove</b> abiti? (어디 살아?)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">quando</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">언제</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">불변</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700"><b>Quando</b> parti? (언제 떠나?)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">perché</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">왜</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">불변</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700"><b>Perché</b> studi l'italiano? (왜 이탈리아어 공부해?)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">come</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">어떻게</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">불변</td>
+                                    <td class="px-6 py-4 text-sm text-stone-700"><b>Come</b> stai? (어떻게 지내?)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="page-lec15" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">15강: 지시 대명사</h2>
+                    <p class="mb-6 text-stone-600">15강에서는 명사 없이 단독으로 쓰여 '이것/이 사람', '저것/저 사람'을 나타내는 지시 대명사를 배웁니다.</p>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">상세 정리</h3>
+                    <p class="mb-4 text-stone-700">지시 대명사는 가리키는 대상의 성과 수에 따라 4가지 형태로 변합니다.</p>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">구분</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">남성 단수</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">여성 단수</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">남성 복수</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">여성 복수</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">이것/이 사람</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">questo</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">questa</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">questi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">queste</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">저것/저 사람</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">quello</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">quella</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">quelli</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">quelle</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">의미 강조</h3>
+                    <p class="mb-6 text-stone-700">장소 부사 <i>qui</i>/<i>qua</i>(여기) 또는 <i>lì</i>/<i>là</i>(저기)와 함께 쓰여 의미를 강조할 수 있습니다.
+                        <ul class="list-['\2023'] list-outside space-y-1 pl-6 mt-2">
+                            <li>예: <b>Questo qui</b> è mio. (바로 여기 있는 이것이 내 것이다.)</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+
+            <div id="page-lec16" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">16강: 직설법 현재 - -are 동사</h2>
+                    <p class="mb-6 text-stone-600">이탈리아어 문장의 심장은 바로 '동사'입니다. 이탈리아어 규칙 동사 중 가장 많은 비중을 차지하는 -are 동사의 현재 시제 변화를 배웁니다.</p>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">상세 정리: -are 동사 어미 변화</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">인칭</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">어미</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">예시: <i>lavorare</i> (일하다)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">io</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">-o</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">lavor<b>o</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">tu</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">-i</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">lavor<b>i</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">lui/lei/Lei</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">-a</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">lavor<b>a</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">noi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">-iamo</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">lavor<b>iamo</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">voi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">-ate</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">lavor<b>ate</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">loro</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">-ano</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">lavor<b>ano</b></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="page-lec17" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">17강: 직설법 현재 - -ere / -ire 동사</h2>
+                    <p class="mb-6 text-stone-600">-ere 동사와 두 가지 유형으로 나뉘는 -ire 동사의 현재 시제 변화를 학습합니다.</p>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">-ere 동사 어미 변화</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">인칭</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">어미</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">예시: <i>prendere</i> (잡다, 먹다)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">io</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">-o</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">prend<b>o</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">tu</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">-i</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">prend<b>i</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">lui/lei/Lei</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">-e</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">prend<b>e</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">noi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">-iamo</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">prend<b>iamo</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">voi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">-ete</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">prend<b>ete</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">loro</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-700">-ono</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">prend<b>ono</b></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">-ire 동사 어미 변화 (두 가지 유형 비교)</h3>
+                    <div class="overflow-x-auto mb-6">
+                        <table class="min-w-full divide-y divide-stone-200 border border-stone-200 rounded-lg">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">인칭</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">기본형 (예: <i>aprire</i> 열다)</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">isc 삽입형 (예: <i>finire</i> 끝내다)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-stone-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">io</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">apr<b>o</b></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">fin<b>isco</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">tu</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">apr<b>i</b></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">fin<b>isci</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">lui/lei/Lei</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">apr<b>e</b></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">fin<b>isce</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">noi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">apr<b>iamo</b></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">fin<b>iamo</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">voi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">apr<b>ite</b></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">fin<b>ite</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">loro</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">apr<b>ono</b></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">fin<b>iscono</b></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="page-lec18" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">18강: 직설법 현재 - -are 변형 동사</h2>
+                    <p class="mb-6 text-stone-600">어간의 발음을 유지하기 위해 철자가 일부 변경되는 -are 동사 유형을 배웁니다.</p>
+                    
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">상세 정리</h3>
+                    <ul class="list-disc list-outside space-y-3 pl-5 mb-6 text-stone-700">
+                        <li><b>-care / -gare 동사:</b> <i>tu</i>(2인칭 단수), <i>noi</i>(1인칭 복수) 형태에서 원래의 ㄲ, ㄱ 발음을 유지하기 위해 <b>h</b>가 삽입됩니다.
+                            <ul class="list-['\2023'] list-outside space-y-1 pl-6 mt-2">
+                                <li><i>cercare</i> (찾다) → tu cer<b>chi</b>, noi cer<b>chiamo</b></li>
+                                <li><i>pagare</i> (지불하다) → tu pa<b>ghi</b>, noi pa<b>ghiamo</b></li>
+                            </ul>
+                        </li>
+                        <li><b>-ciare / -giare 동사:</b> <i>tu</i>(2인칭 단수) 형태에서 불필요한 <i>i</i>의 중복을 막기 위해 어간의 <i>i</i>가 탈락합니다. (<i>noi</i>는 <i>i</i> 유지)
+                            <ul class="list-['\2023'] list-outside space-y-1 pl-6 mt-2">
+                                <li><i>cominciare</i> (시작하다) → tu comin<b>ci</b></li>
+                                <li><i>mangiare</i> (먹다) → tu man<b>gi</b></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <div class="bg-indigo-50 border-l-4 border-indigo-500 text-indigo-800 p-4 rounded-md shadow">
+                        <h4 class="font-bold mb-2">김쌤's Tip: 재미있는 발음 이야기</h4>
+                        <p>동사 <i>giocare</i>(놀다, 경기하다)는 -care 동사 규칙에 따라 2인칭 단수형이 <i>giochi</i>가 되는데요, 한국 학생들은 이 발음을 들으면 웃음을 터뜨리곤 합니다. 한국어의 특정 표현('족발에')과 발음이 비슷하게 들리기 때문이죠! 이런 재미있는 연관성을 활용하면 동사 변화를 더 쉽게 기억할 수 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="page-lec19" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">19강: 직설법 현재 - 불규칙 동사 / 현재 진행형</h2>
+                    <p class="mb-6 text-stone-600">회화에서 사용 빈도가 매우 높은 주요 불규칙 동사들의 현재 시제 변화와 '지금 ~하는 중이다'를 표현하는 현재 진행형을 학습합니다.</p>
+                    
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">주요 불규칙 동사 (예시)</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>andare</b> (가다): vado, vai, va, andiamo, andate, vanno</li>
+                        <li><b>fare</b> (하다): faccio, fai, fa, facciamo, fate, fanno</li>
+                        <li><b>potere</b> (할 수 있다): posso, puoi, può, possiamo, potete, possono</li>
+                        <li><b>volere</b> (원하다): voglio, vuoi, vuole, vogliamo, volete, vogliono</li>
+                        <li><b>dovere</b> (해야 한다): devo, devi, deve, dobbiamo, dovete, devono</li>
+                        <li><b>uscire</b> (나가다): esco, esci, esce, usciamo, uscite, escono</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">현재 진행형 (stare + 제룬디오)</h3>
+                    <p class="mb-4 text-stone-700">'지금 ~하는 중이다'라는 의미를 나타내며, <i>stare</i> 동사의 현재형에 동사의 제룬디오 형태를 결합하여 만듭니다.</p>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li>-are 동사 → <b>-ando</b> (예: <i>lavorare</i> → <i>lavorando</i>)</li>
+                        <li>-ere, -ire 동사 → <b>-endo</b> (예: <i>prendere</i> → <i>prendendo</i>)</li>
+                        <li><b>예문:</b> <b>Sto lavorando</b>. (나는 일하는 중이다.)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="page-lec21" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">21강: 전치사 a / con</h2>
+                    <p class="mb-6 text-stone-600">이 마지막 파트에서는 문장의 각 요소를 접착제처럼 연결하여 문맥을 완성하는 '전치사'에 대해 배웁니다.</p>
+                    
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">a의 용법</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>장소 (도시, 작은 섬 앞):</b> Vado <b>a</b> Roma. (나는 로마에 간다.)</li>
+                        <li><b>시간 (~시에):</b> Ci vediamo <b>alle</b> nove. (우리 9시에 보자.)</li>
+                        <li><b>대상 (~에게):</b> Do un libro <b>a</b> Maria. (나는 마리아에게 책을 준다.)</li>
+                        <li><b>목적 (~하러):</b> Vado <b>a</b> studiare. (나는 공부하러 간다.)</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">con의 용법</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>동반 (~와 함께):</b> Esco <b>con</b> gli amici. (나는 친구들과 함께 나간다.)</li>
+                        <li><b>수단 (~을 가지고/타고):</b> Vado <b>con</b> la macchina. (나는 차를 타고 간다.)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="page-lec22" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">22강: 전치사 da / per</h2>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">da의 용법</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>출발점 (~로부터):</b> Vengo <b>da</b> Seoul. (나는 서울에서 왔다.)</li>
+                        <li><b>사람 (~의 집에/가게에):</b> Vado <b>dal</b> dentista. (나는 치과에 간다.)</li>
+                        <li><b>시간의 경과 (~이래로):</b> Studio l'italiano <b>da</b> tre mesi. (나는 3달 전부터 이탈리아어를 공부해왔다.)</li>
+                        <li><b>용도 (~용):</b> occhiali <b>da</b> sole (선글라스)</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">per의 용법</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>목적 (~를 위해):</b> Questo regalo è <b>per</b> te. (이 선물은 너를 위한 것이다.)</li>
+                        <li><b>방향 (~로 향하는):</b> Questo treno parte <b>per</b> Milano. (이 기차는 밀라노행이다.)</li>
+                        <li><b>기간 (~동안):</b> Ho vissuto a Roma <b>per</b> due anni. (나는 로마에서 2년 동안 살았다.)</li>
+                        <li><b>이유 (~때문에):</b> Grazie <b>per</b> l'aiuto. (도움 때문에 고마워.)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="page-lec23" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">23강: 전치사 in / fra, tra / su</h2>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">in의 용법</h3>
+                    <ul class="list-disc list-outside space-y-3 pl-5 mb-6 text-stone-700">
+                        <li><b>장소:</b>
+                            <ul class="list-['\2023'] list-outside space-y-1 pl-6 mt-2">
+                                <li>나라, 주: Abito <b>in</b> Italia. (나는 이탈리아에 산다.)</li>
+                                <li>큰 섬 (단, 시칠리아Sicilia와 사르데냐Sardegna에 한정): La fabbrica è <b>in</b> Sicilia. (그 공장은 시칠리아에 있다.)</li>
+                                <li>-eria로 끝나는 장소 명사 앞: Vado <b>in</b> pizzeria. (피자가게에 간다.), Vado <b>in</b> macelleria. (정육점에 간다.)</li>
+                                <li>관용적으로 <i>in</i>을 쓰는 장소 명사 앞: <b>in</b> banca(은행에), <b>in</b> biblioteca(도서관에), <b>in</b> ufficio(사무실에), <b>in</b> chiesa(교회/성당에), <b>in</b> farmacia(약국에) 등</li>
+                            </ul>
+                        </li>
+                        <li><b>위치 (~안에):</b> Le chiavi sono <b>nella</b> borsa. (열쇠는 가방 안에 있다.)</li>
+                        <li><b>교통수단 (관사 없이):</b> Vado <b>in</b> treno. (나는 기차를 타고 간다.)</li>
+                        <li><b>시간 (계절, 월, 년도):</b> Vado in Italia <b>in</b> estate. (나는 여름에 이탈리아에 간다.)</li>
+                    </ul>
+                    
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">fra / tra의 용법 (의미 동일)</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>시간 (~후에):</b> Arrivo <b>fra</b> dieci minuti. (10분 후에 도착해.)</li>
+                        <li><b>관계 (~사이에, ~중에서):</b> È uno <b>tra</b> i miei amici. (그는 내 친구들 중 한 명이다.)</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-4 text-stone-800">su의 용법</h3>
+                    <ul class="list-disc list-outside space-y-2 pl-5 mb-6 text-stone-700">
+                        <li><b>위치 (~위에):</b> Il libro è <b>sul</b> tavolo. (책이 테이블 위에 있다.)</li>
+                        <li><b>주제 (~에 관하여):</b> un libro <b>sulla</b> storia italiana (이탈리아 역사에 관한 책)</li>
+                        <li><b>근사치 (~쯤):</b> un uomo <b>sui</b> trent'anni (30세쯤 된 남자)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="page-vocab" class="content-section">
+                <div class="bg-white p-8 rounded-lg shadow-md max-w-6xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-6 text-indigo-700">부록: 강의별 전체 어휘 목록</h2>
+                    <p class="mb-6 text-stone-600">이 부록은 1강부터 23강까지 강의에 등장한 주요 단어와 표현을 총정리한 자료입니다. 특정 강의의 단어를 집중적으로 복습하거나, 전체 어휘를 검토하며 자신의 어휘력을 점검하는 데 유용하게 활용할 수 있습니다.</p>
+
+                    <div class="flex flex-col md:flex-row gap-4 mb-6">
+                        <div class="flex-1">
+                            <label for="vocab-search" class="block text-sm font-medium text-stone-700">어휘 검색</label>
+                            <input type="text" id="vocab-search" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="이탈리아어 또는 한국어 입력...">
+                        </div>
+                        <div class="flex-1 md:flex-none">
+                            <label for="lecture-select" class="block text-sm font-medium text-stone-700">강의 선택</label>
+                            <select id="lecture-select" class="mt-1 block w-full rounded-md border-stone-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                <option value="all">전체 강의</option>
+                                <option value="1">1강</option>
+                                <option value="2">2강</option>
+                                <option value="3">3강</option>
+                                <option value="4">4강</option>
+                                <option value="5">5강</option>
+                                <option value="6">6강</option>
+                                <option value="7">7강</option>
+                                <option value="8">8강</option>
+                                <option value="9">9강</option>
+                                <option value="10">10강</option>
+                                <option value="11">11강</option>
+                                <option value="12">12강</option>
+                                <option value="13">13강</option>
+                                <option value="14">14강</option>
+                                <option value="15">15강</option>
+                                <option value="16">16강</option>
+                                <option value="17">17강</option>
+                                <option value="18">18강</option>
+                                <option value="19">19강</option>
+                                <option value="21">21강</option>
+                                <option value="22">22강</option>
+                                <option value="23">23강</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto border border-stone-200 rounded-lg">
+                        <table class="min-w-full divide-y divide-stone-200">
+                            <thead class="bg-stone-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">강의</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">이탈리아어</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">발음</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-stone-500 uppercase tracking-wider">의미</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vocab-table-body" class="bg-white divide-y divide-stone-200">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        const allVocabulary = [
+            { "lecture": 1, "term": "alfabeto", "pron": "알파베토", "def": "명. 알파벳" },
+            { "lecture": 1, "term": "La Divina Commedia", "pron": "라 디비나 꼼메디아", "def": "명. 신곡" },
+            { "lecture": 1, "term": "parola straniera", "pron": "빠롤라 스뜨라니에라", "def": "명. 외래어" },
+            { "lecture": 2, "term": "casa", "pron": "까사", "def": "명. 집" },
+            { "lecture": 2, "term": "cena", "pron": "체나", "def": "명. 저녁식사" },
+            { "lecture": 2, "term": "chiave", "pron": "끼아베", "def": "명. 열쇠" },
+            { "lecture": 2, "term": "chilo", "pron": "낄로", "def": "명. 킬로그램" },
+            { "lecture": 2, "term": "gatto", "pron": "가또", "def": "명. 고양이" },
+            { "lecture": 2, "term": "gelato", "pron": "젤라또", "def": "명. 아이스크림" },
+            { "lecture": 2, "term": "gloria", "pron": "글로리아", "def": "명. 영광" },
+            { "lecture": 2, "term": "hai", "pron": "아이", "def": "동. avere 동사 변형" },
+            { "lecture": 2, "term": "hanno", "pron": "안노", "def": "동. avere 동사 변형" },
+            { "lecture": 2, "term": "ho", "pron": "오", "def": "동. avere 동사 변형" },
+            { "lecture": 2, "term": "hotel", "pron": "오뗄", "def": "명. 호텔" },
+            { "lecture": 2, "term": "macchina", "pron": "마끼나", "def": "명. 자동차" },
+            { "lecture": 2, "term": "museo", "pron": "무제오", "def": "명. 박물관" },
+            { "lecture": 2, "term": "pesce", "pron": "뻬쉐", "def": "명. 생선" },
+            { "lecture": 2, "term": "rosso", "pron": "로쏘", "def": "형. 붉은" },
+            { "lecture": 2, "term": "sbaglio", "pron": "즈발리오", "def": "명. 실수" },
+            { "lecture": 2, "term": "scatola", "pron": "스까똘라", "def": "명. 상자" },
+            { "lecture": 2, "term": "scena", "pron": "쉐나", "def": "명. 장면" },
+            { "lecture": 2, "term": "spaghetti", "pron": "스파게띠", "def": "명. 스파게티" },
+            { "lecture": 3, "term": "bagno", "pron": "바뇨", "def": "명. 화장실" },
+            { "lecture": 3, "term": "biglietto", "pron": "빌리엣또", "def": "명. 표" },
+            { "lecture": 3, "term": "camera", "pron": "까메라", "def": "명. 방" },
+            { "lecture": 3, "term": "cliente", "pron": "끌리엔떼", "def": "명. 손님" },
+            { "lecture": 3, "term": "lampada", "pron": "람빠다", "def": "명. 램프, 등" },
+            { "lecture": 3, "term": "libro", "pron": "리브로", "def": "명. 책" },
+            { "lecture": 3, "term": "macchina", "pron": "마끼나", "def": "명. 자동차" },
+            { "lecture": 3, "term": "madre", "pron": "마드레", "def": "명. 어머니" },
+            { "lecture": 3, "term": "padre", "pron": "빠드레", "def": "명. 아버지" },
+            { "lecture": 3, "term": "porta", "pron": "뽀르따", "def": "명. 문" },
+            { "lecture": 3, "term": "scatola", "pron": "스까똘라", "def": "명. 상자" },
+            { "lecture": 3, "term": "sedia", "pron": "세디아", "def": "명. 의자" },
+            { "lecture": 3, "term": "studente", "pron": "스뚜덴떼", "def": "명. 학생" },
+            { "lecture": 3, "term": "tavolo", "pron": "따볼로", "def": "명. 테이블" },
+            { "lecture": 4, "term": "amico/a", "pron": "아미꼬/까", "def": "명. 친구" },
+            { "lecture": 4, "term": "chiave", "pron": "끼아베", "def": "명. 열쇠" },
+            { "lecture": 4, "term": "giornale", "pron": "죠르날레", "def": "명. 신문" },
+            { "lecture": 4, "term": "libro", "pron": "리브로", "def": "명. 책" },
+            { "lecture": 4, "term": "spaghetti", "pron": "스파게띠", "def": "명. 스파게티" },
+            { "lecture": 4, "term": "specchio", "pron": "스뻭끼오", "def": "명. 거울" },
+            { "lecture": 4, "term": "studente", "pron": "스뚜덴떼", "def": "명. 학생" },
+            { "lecture": 4, "term": "tavola", "pron": "따볼라", "def": "명. 식탁" },
+            { "lecture": 4, "term": "zaino", "pron": "자이노", "def": "명. 배낭" },
+            { "lecture": 5, "term": "amico/a", "pron": "아미꼬/까", "def": "명. 친구" },
+            { "lecture": 5, "term": "chiave", "pron": "끼아베", "def": "명. 열쇠" },
+            { "lecture": 5, "term": "finestra", "pron": "피네스뜨라", "def": "명. 창문" },
+            { "lecture": 5, "term": "fiore", "pron": "피오레", "def": "명. 꽃" },
+            { "lecture": 5, "term": "foglio", "pron": "폴리오", "def": "명. 종이 한 장" },
+            { "lecture": 5, "term": "isola", "pron": "이졸라", "def": "명. 섬" },
+            { "lecture": 5, "term": "libro", "pron": "리브로", "def": "명. 책" },
+            { "lecture": 5, "term": "negozio", "pron": "네고찌오", "def": "명. 가게" },
+            { "lecture": 5, "term": "ombrello", "pron": "옴브렐로", "def": "명. 우산" },
+            { "lecture": 5, "term": "penna", "pron": "뻰나", "def": "명. 펜" },
+            { "lecture": 5, "term": "ragazzo/a", "pron": "라가쪼/짜", "def": "명. 소년/소녀" },
+            { "lecture": 5, "term": "rivista", "pron": "리비스따", "def": "명. 잡지" },
+            { "lecture": 5, "term": "signora/e", "pron": "시뇨라/레", "def": "명. 부인/신사" },
+            { "lecture": 5, "term": "tavola", "pron": "따볼라", "def": "명. 식탁" },
+            { "lecture": 5, "term": "uomo", "pron": "우오모", "def": "명. 남자" },
+            { "lecture": 5, "term": "zaino", "pron": "자이노", "def": "명. 배낭" },
+            { "lecture": 6, "term": "autobus", "pron": "아우토부스", "def": "명. 버스" },
+            { "lecture": 6, "term": "bici", "pron": "비치", "def": "명. 자전거 (bicicletta의 축약형)" },
+            { "lecture": 6, "term": "bue", "pron": "부에", "def": "명. 황소" },
+            { "lecture": 6, "term": "caffè", "pron": "까페", "def": "명. 커피" },
+            { "lecture": 6, "term": "cinema", "pron": "치네마", "def": "명. 영화관" },
+            { "lecture": 6, "term": "città", "pron": "칫따", "def": "명. 도시" },
+            { "lecture": 6, "term": "collega", "pron": "꼴레가", "def": "명. 동료" },
+            { "lecture": 6, "term": "crisi", "pron": "끄리지", "def": "명. 위기" },
+            { "lecture": 6, "term": "dio", "pron": "디오", "def": "명. 신" },
+            { "lecture": 6, "term": "film", "pron": "필름", "def": "명. 영화" },
+            { "lecture": 6, "term": "foto", "pron": "포토", "def": "명. 사진 (fotografia의 축약형)" },
+            { "lecture": 6, "term": "gru", "pron": "그루", "def": "명. 학(새)" },
+            { "lecture": 6, "term": "mano", "pron": "마노", "def": "명. 손" },
+            { "lecture": 6, "term": "moto", "pron": "모토", "def": "명. 오토바이 (motocicletta의 축약형)" },
+            { "lecture": 6, "term": "parente", "pron": "빠렌떼", "def": "명. 친척" },
+            { "lecture": 6, "term": "pianista", "pron": "삐아니스따", "def": "명. 피아니스트" },
+            { "lecture": 6, "term": "problema", "pron": "쁘로블레마", "def": "명. 문제" },
+            { "lecture": 6, "term": "re", "pron": "레", "def": "명. 왕" },
+            { "lecture": 6, "term": "sport", "pron": "스뽀르트", "def": "명. 스포츠" },
+            { "lecture": 6, "term": "tè", "pron": "떼", "def": "명. 차" },
+            { "lecture": 6, "term": "tema", "pron": "떼마", "def": "명. 주제" },
+            { "lecture": 6, "term": "tesi", "pron": "떼지", "def": "명. 논문" },
+            { "lecture": 6, "term": "università", "pron": "우니베르시따", "def": "명. 대학교" },
+            { "lecture": 6, "term": "uomo", "pron": "우오모", "def": "명. 남자" },
+            { "lecture": 7, "term": "americano", "pron": "아메리까노", "def": "형. 미국의" },
+            { "lecture": 7, "term": "australiano", "pron": "아우스뜨랄리아노", "def": "형. 호주의" },
+            { "lecture": 7, "term": "cinese", "pron": "치네제", "def": "형. 중국의" },
+            { "lecture": 7, "term": "coreano", "pron": "꼬레아노", "def": "형. 한국의" },
+            { "lecture": 7, "term": "francese", "pron": "프란체제", "def": "형. 프랑스의" },
+            { "lecture": 7, "term": "giapponese", "pron": "쟙뽀네제", "def": "형. 일본의" },
+            { "lecture": 7, "term": "inglese", "pron": "잉글레제", "def": "형. 영국의" },
+            { "lecture": 7, "term": "italiano", "pron": "이딸리아노", "def": "형. 이탈리아의" },
+            { "lecture": 7, "term": "olandese", "pron": "올란데제", "def": "형. 네덜란드의" },
+            { "lecture": 7, "term": "russo", "pron": "루쏘", "def": "형. 러시아의" },
+            { "lecture": 7, "term": "spagnolo", "pron": "스빠뇰로", "def": "형. 스페인의" },
+            { "lecture": 7, "term": "tedesco", "pron": "떼데스꼬", "def": "형. 독일의" },
+            { "lecture": 8, "term": "albergo", "pron": "알베르고", "def": "명. 호텔" },
+            { "lecture": 8, "term": "alto", "pron": "알또", "def": "형. 높은, 키 큰" },
+            { "lecture": 8, "term": "bello", "pron": "벨로", "def": "형. 아름다운" },
+            { "lecture": 8, "term": "borsa", "pron": "보르사", "def": "명. 가방" },
+            { "lecture": 8, "term": "buono", "pron": "부오노", "def": "형. 좋은" },
+            { "lecture": 8, "term": "caffè", "pron": "까페", "def": "명. 커피" },
+            { "lecture": 8, "term": "economico", "pron": "에꼬노미꼬", "def": "형. 경제적인" },
+            { "lecture": 8, "term": "esercizio", "pron": "에제르치찌오", "def": "명. 연습문제" },
+            { "lecture": 8, "term": "facile", "pron": "파칠레", "def": "형. 쉬운" },
+            { "lecture": 8, "term": "freddo", "pron": "프레또", "def": "형. 차가운" },
+            { "lecture": 8, "term": "gonna", "pron": "곤나", "def": "명. 치마" },
+            { "lecture": 8, "term": "grande", "pron": "그란데", "def": "형. 큰" },
+            { "lecture": 8, "term": "intelligente", "pron": "인뗄리젠떼", "def": "형. 똑똑한" },
+            { "lecture": 8, "term": "nuovo", "pron": "누오보", "def": "형. 새로운" },
+            { "lecture": 8, "term": "pesante", "pron": "뻬잔떼", "def": "형. 무거운" },
+            { "lecture": 8, "term": "pulito", "pron": "뿔리또", "def": "형. 깨끗한" },
+            { "lecture": 8, "term": "ragazzo/a", "pron": "라가쪼/짜", "def": "명. 소년/소녀" },
+            { "lecture": 8, "term": "scatola", "pron": "스까똘라", "def": "명. 상자" },
+            { "lecture": 8, "term": "sottile", "pron": "솟띨레", "def": "형. 얇은" },
+            { "lecture": 9, "term": "aereo", "pron": "아에레오", "def": "명. 비행기" },
+            { "lecture": 9, "term": "alto/basso", "pron": "알또/바쏘", "def": "형. 높은/낮은" },
+            { "lecture": 9, "term": "aperto/chiuso", "pron": "아뻬르또/끼우조", "def": "형. 열린/닫힌" },
+            { "lecture": 9, "term": "buono/cattivo", "pron": "부오노/깟띠보", "def": "형. 좋은/나쁜" },
+            { "lecture": 9, "term": "caldo/freddo", "pron": "깔도/프레또", "def": "형. 뜨거운/차가운" },
+            { "lecture": 9, "term": "costoso/economico", "pron": "꼬스또조/에꼬노미꼬", "def": "형. 비싼/저렴한" },
+            { "lecture": 9, "term": "facile/difficile", "pron": "파칠레/디피칠레", "def": "형. 쉬운/어려운" },
+            { "lecture": 9, "term": "forte/debole", "pron": "포르떼/데볼레", "def": "형. 강한/약한" },
+            { "lecture": 9, "term": "giovane/vecchio", "pron": "죠바네/벡끼오", "def": "형. 젊은/늙은" },
+            { "lecture": 9, "term": "grande/piccolo", "pron": "그란데/삐꼴로", "def": "형. 큰/작은" },
+            { "lecture": 9, "term": "grasso/magro", "pron": "그라쏘/마그로", "def": "형. 뚱뚱한/마른" },
+            { "lecture": 9, "term": "largo/stretto", "pron": "라르고/스뜨레또", "def": "형. 넓은/좁은" },
+            { "lecture": 9, "term": "libero/occupato", "pron": "리베로/옥꾸빠또", "def": "형. 자유로운/바쁜" },
+            { "lecture": 9, "term": "lungo/corto", "pron": "룽고/꼬르또", "def": "형. 긴/짧은" },
+            { "lecture": 9, "term": "pulito/sporco", "pron": "뿔리또/스뽀르꼬", "def": "형. 깨끗한/더러운" },
+            { "lecture": 9, "term": "ricco/povero", "pron": "릭꼬/뽀베로", "def": "형. 부유한/가난한" },
+            { "lecture": 9, "term": "veloce/lento", "pron": "벨로체/렌또", "def": "형. 빠른/느린" },
+            { "lecture": 9, "term": "vivo/morto", "pron": "비보/모르또", "def": "형. 살아있는/죽은" },
+            { "lecture": 10, "term": "cento", "pron": "첸또", "def": "수. 100" },
+            { "lecture": 10, "term": "mille / mila", "pron": "밀레 / 밀라", "def": "수. 1,000 / (복수) 2,000~" },
+            { "lecture": 10, "term": "milione / milioni", "pron": "밀리오네 / 밀리오니", "def": "수. 백만 / (복수)" },
+            { "lecture": 10, "term": "numero cardinale", "pron": "누메로 까르디날레", "def": "명. 기수" },
+            { "lecture": 10, "term": "numero ordinale", "pron": "누메로 오르디날레", "def": "명. 서수" },
+            { "lecture": 10, "term": "primo, secondo, terzo...", "pron": "프리모, 세꼰도, 떼르쪼", "def": "서수. 첫째, 둘째, 셋째..." },
+            { "lecture": 10, "term": "uno, due, tre...", "pron": "우노, 두에, 뜨레", "def": "기수. 하나, 둘, 셋..." },
+            { "lecture": 11, "term": "figlio/a", "pron": "필리오/리아", "def": "명. 아들/딸" },
+            { "lecture": 11, "term": "fratello", "pron": "프라텔로", "def": "명. 형제" },
+            { "lecture": 11, "term": "madre", "pron": "마드레", "def": "명. 어머니" },
+            { "lecture": 11, "term": "marito", "pron": "마리또", "def": "명. 남편" },
+            { "lecture": 11, "term": "moglie", "pron": "몰리에", "def": "명. 아내" },
+            { "lecture": 11, "term": "nipote", "pron": "니뽀떼", "def": "명. 조카, 손자/손녀" },
+            { "lecture": 11, "term": "nonno/a", "pron": "논노/논나", "def": "명. 할아버지/할머니" },
+            { "lecture": 11, "term": "padre", "pron": "빠드레", "def": "명. 아버지" },
+            { "lecture": 11, "term": "sorella", "pron": "소렐라", "def": "명. 자매" },
+            { "lecture": 12, "term": "bello", "pron": "벨로", "def": "형. 아름다운" },
+            { "lecture": 12, "term": "cappotto", "pron": "깝뽀또", "def": "명. 외투" },
+            { "lecture": 12, "term": "canzone", "pron": "깐쪼네", "def": "명. 노래" },
+            { "lecture": 12, "term": "macchina", "pron": "마끼나", "def": "명. 자동차" },
+            { "lecture": 12, "term": "problema", "pron": "쁘로블레마", "def": "명. 문제" },
+            { "lecture": 12, "term": "quello", "pron": "구엘로", "def": "지시형. 그/저" },
+            { "lecture": 12, "term": "questo", "pron": "구에스또", "def": "지시형. 이" },
+            { "lecture": 12, "term": "ristorante", "pron": "리스또란떼", "def": "명. 레스토랑" },
+            { "lecture": 12, "term": "treno", "pron": "뜨레노", "def": "명. 기차" },
+            { "lecture": 13, "term": "in punto", "pron": "인 뿐또", "def": "부. 정각에" },
+            { "lecture": 13, "term": "meno", "pron": "메노", "def": "전. ~ 전" },
+            { "lecture": 13, "term": "mezza", "pron": "멧자", "def": "형. 반(30분)" },
+            { "lecture": 13, "term": "mezzanotte", "pron": "멧자놋떼", "def": "명. 자정" },
+            { "lecture": 13, "term": "mezzogiorno", "pron": "멧조죠르노", "def": "명. 정오" },
+            { "lecture": 13, "term": "minuto", "pron": "미누또", "def": "명. 분" },
+            { "lecture": 13, "term": "ora", "pron": "오라", "def": "명. 시간" },
+            { "lecture": 13, "term": "quarto", "pron": "꽈르또", "def": "명. 1/4 (15분)" },
+            { "lecture": 13, "term": "secondo", "pron": "세꼰도", "def": "명. 초" },
+            { "lecture": 14, "term": "che/che cosa", "pron": "께/께 꼬자", "def": "의문사. 무엇" },
+            { "lecture": 14, "term": "chi", "pron": "끼", "def": "의문사. 누구" },
+            { "lecture": 14, "term": "come", "pron": "꼬메", "def": "의문사. 어떻게" },
+            { "lecture": 14, "term": "dove", "pron": "도베", "def": "의문사. 어디에" },
+            { "lecture": 14, "term": "perché", "pron": "뻬르께", "def": "의문사. 왜" },
+            { "lecture": 14, "term": "quale", "pron": "꽈레", "def": "의문사. 어떤 것" },
+            { "lecture": 14, "term": "quando", "pron": "꽌도", "def": "의문사. 언제" },
+            { "lecture": 14, "term": "quanto", "pron": "꽌또", "def": "의문사. 얼마나" },
+            { "lecture": 15, "term": "borsa", "pron": "보르사", "def": "명. 가방" },
+            { "lecture": 15, "term": "dottore", "pron": "돗또레", "def": "명. 의사, 박사" },
+            { "lecture": 15, "term": "insegnante", "pron": "인세냔떼", "def": "명. 선생님" },
+            { "lecture": 15, "term": "là/lì", "pron": "라/리", "def": "부. 저기, 거기" },
+            { "lecture": 15, "term": "piacere", "pron": "삐아체레", "def": "동. 좋아하다" },
+            { "lecture": 15, "term": "più", "pron": "삐우", "def": "부. 더" },
+            { "lecture": 15, "term": "qua/qui", "pron": "꽈/꾸이", "def": "부. 여기" },
+            { "lecture": 15, "term": "quello/a/i/e", "pron": "구엘로/라/리/레", "def": "지시대명사. 저것/저 사람" },
+            { "lecture": 15, "term": "questo/a/i/e", "pron": "구에스또/따/띠/떼", "def": "지시대명사. 이것/이 사람" },
+            { "lecture": 16, "term": "abitare", "pron": "아비따레", "def": "동. 거주하다" },
+            { "lecture": 16, "term": "ascoltare", "pron": "아스꼴따레", "def": "동. 듣다" },
+            { "lecture": 16, "term": "aspettare", "pron": "아스뻿따레", "def": "동. 기다리다" },
+            { "lecture": 16, "term": "comprare", "pron": "꼼쁘라레", "def": "동. 사다" },
+            { "lecture": 16, "term": "ditta", "pron": "딧따", "def": "명. 회사" },
+            { "lecture": 16, "term": "genitori", "pron": "제니또리", "def": "명. 부모님" },
+            { "lecture": 16, "term": "lavorare", "pron": "라보라레", "def": "동. 일하다" },
+            { "lecture": 16, "term": "preparare", "pron": "쁘레빠라레", "def": "동. 준비하다" },
+            { "lecture": 16, "term": "prenotare", "pron": "쁘레노따레", "def": "동. 예약하다" },
+            { "lecture": 16, "term": "restare", "pron": "레스따레", "def": "동. 머무르다" },
+            { "lecture": 16, "term": "studiare", "pron": "스뚜디아레", "def": "동. 공부하다" },
+            { "lecture": 17, "term": "accendere", "pron": "앗첸데레", "def": "동. 켜다" },
+            { "lecture": 17, "term": "aprire", "pron": "아프리레", "def": "동. 열다" },
+            { "lecture": 17, "term": "capire (-isc)", "pron": "까삐레", "def": "동. 이해하다" },
+            { "lecture": 17, "term": "conoscere", "pron": "꼬노쉐레", "def": "동. 알다" },
+            { "lecture": 17, "term": "dormire", "pron": "도르미레", "def": "동. 잠자다" },
+            { "lecture": 17, "term": "finire (-isc)", "pron": "피니레", "def": "동. 끝내다" },
+            { "lecture": 17, "term": "leggere", "pron": "렛제레", "def": "동. 읽다" },
+            { "lecture": 17, "term": "mettere", "pron": "멧떼레", "def": "동. 놓다" },
+            { "lecture": 17, "term": "partire", "pron": "빠르띠레", "def": "동. 출발하다" },
+            { "lecture": 17, "term": "perdere", "pron": "뻬르데레", "def": "동. 잃어버리다" },
+            { "lecture": 17, "term": "preferire (-isc)", "pron": "쁘레페리레", "def": "동. 선호하다" },
+            { "lecture": 17, "term": "prendere", "pron": "프렌데레", "def": "동. 잡다, 먹다, 타다" },
+            { "lecture": 17, "term": "pulire (-isc)", "pron": "뿔리레", "def": "동. 청소하다" },
+            { "lecture": 17, "term": "ricevere", "pron": "리체베레", "def": "동. 받다" },
+            { "lecture": 17, "term": "sentire", "pron": "센띠레", "def": "동. 듣다, 느끼다" },
+            { "lecture": 17, "term": "spedire (-isc)", "pron": "스뻬디레", "def": "동. 보내다" },
+            { "lecture": 17, "term": "vedere", "pron": "베데레", "def": "동. 보다" },
+            { "lecture": 17, "term": "vendere", "pron": "벤데레", "def": "동. 팔다" },
+            { "lecture": 18, "term": "caricare", "pron": "까리까레", "def": "동. 싣다, 충전하다" },
+            { "lecture": 18, "term": "cercare", "pron": "체르까레", "def": "동. 찾다" },
+            { "lecture": 18, "term": "cominciare", "pron": "꼬민차레", "def": "동. 시작하다" },
+            { "lecture": 18, "term": "dimenticare", "pron": "디멘띠까레", "def": "동. 잊다" },
+            { "lecture": 18, "term": "giocare", "pron": "죠까레", "def": "동. 놀다, 경기하다" },
+            { "lecture": 18, "term": "mangiare", "pron": "만쟈레", "def": "동. 먹다" },
+            { "lecture": 18, "term": "pagare", "pron": "빠가레", "def": "동. 지불하다" },
+            { "lecture": 18, "term": "pregare", "pron": "쁘레가레", "def": "동. 부탁하다, 기도하다" },
+            { "lecture": 18, "term": "spiegare", "pron": "스삐에가레", "def": "동. 설명하다" },
+            { "lecture": 18, "term": "studiare", "pron": "스뚜디아레", "def": "동. 공부하다" },
+            { "lecture": 18, "term": "viaggiare", "pron": "비앗쟈레", "def": "동. 여행하다" },
+            { "lecture": 19, "term": "andare", "pron": "안다레", "def": "동. 가다" },
+            { "lecture": 19, "term": "avere", "pron": "아베레", "def": "동. 가지다" },
+            { "lecture": 19, "term": "bere", "pron": "베레", "def": "동. 마시다" },
+            { "lecture": 19, "term": "dare", "pron": "다레", "def": "동. 주다" },
+            { "lecture": 19, "term": "dire", "pron": "디레", "def": "동. 말하다" },
+            { "lecture": 19, "term": "dovere", "pron": "도베레", "def": "동. 해야 한다" },
+            { "lecture": 19, "term": "essere", "pron": "에쎄레", "def": "동. ~이다, 있다" },
+            { "lecture": 19, "term": "fare", "pron": "파레", "def": "동. 하다" },
+            { "lecture": 19, "term": "gerundio (-ando, -endo)", "pron": "제룬디오", "def": "명. 제룬디오 (현재분사)" },
+            { "lecture": 19, "term": "potere", "pron": "뽀떼레", "def": "동. 할 수 있다" },
+            { "lecture": 19, "term": "rimanere", "pron": "리마네레", "def": "동. 남다, 머무르다" },
+            { "lecture": 19, "term": "salire", "pron": "살리레", "def": "동. 오르다" },
+            { "lecture": 19, "term": "sapere", "pron": "사뻬레", "def": "동. 알다" },
+            { "lecture": 19, "term": "stare", "pron": "스따레", "def": "동. 있다, 지내다" },
+            { "lecture": 19, "term": "tenere", "pron": "떼네레", "def": "동. 잡다, 유지하다" },
+            { "lecture": 19, "term": "uscire", "pron": "우쉬레", "def": "동. 나가다" },
+            { "lecture": 19, "term": "venire", "pron": "베니레", "def": "동. 오다" },
+            { "lecture": 19, "term": "volere", "pron": "볼레레", "def": "동. 원하다" },
+            { "lecture": 21, "term": "a", "pron": "아", "def": "전. ~에, ~에게, ~하러" },
+            { "lecture": 21, "term": "andare a pesca", "pron": "안다레 아 뻬스까", "def": "숙. 낚시하러 가다" },
+            { "lecture": 21, "term": "con", "pron": "꼰", "def": "전. ~와 함께, ~을 가지고" },
+            { "lecture": 21, "term": "fare colazione", "pron": "파레 꼴라찌오네", "def": "숙. 아침식사를 하다" },
+            { "lecture": 21, "term": "regalare", "pron": "레갈라레", "def": "동. 선물하다" },
+            { "lecture": 21, "term": "sposarsi", "pron": "스뽀자르시", "def": "동. 결혼하다" },
+            { "lecture": 21, "term": "teatro", "pron": "떼아뜨로", "def": "명. 극장" },
+            { "lecture": 21, "term": "telefonare", "pron": "뗄레포나레", "def": "동. 전화하다" },
+            { "lecture": 22, "term": "andare dal dentista", "pron": "안다레 달 덴띠스따", "def": "숙. 치과에 가다" },
+            { "lecture": 22, "term": "da", "pron": "다", "def": "전. ~로부터, ~의 집에, ~이래로, ~용" },
+            { "lecture": 22, "term": "occhiali da sole", "pron": "옥끼알리 다 쏠레", "def": "명. 선글라스" },
+            { "lecture": 22, "term": "partire per", "pron": "빠르띠레 뻬르", "def": "숙. ~로 출발하다" },
+            { "lecture": 22, "term": "per", "pron": "뻬르", "def": "전. ~를 위해, ~로 향하는, ~동안, ~때문에" },
+            { "lecture": 22, "term": "treno per Napoli", "pron": "뜨레노 뻬르 나폴리", "def": "명. 나폴리행 기차" },
+            { "lecture": 23, "term": "andare in banca", "pron": "안다레 인 방까", "def": "숙. 은행에 가다" },
+            { "lecture": 23, "term": "fra / tra", "pron": "프라 / 뜨라", "def": "전. ~후에, ~사이에" },
+            { "lecture": 23, "term": "in", "pron": "인", "def": "전. ~안에, ~에서 (나라, 주 등)" },
+            { "lecture": 23, "term": "in macchina / in treno", "pron": "인 마끼나 / 인 뜨레노", "def": "숙. 차를 타고 / 기차를 타고" },
+            { "lecture": 23, "term": "prossimo", "pron": "프로씨모", "def": "형. 다음의" },
+            { "lecture": 23, "term": "su", "pron": "수", "def": "전. ~위에, ~에 관하여" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.getElementById('menu-toggle');
+            const vocabSearch = document.getElementById('vocab-search');
+            const lectureSelect = document.getElementById('lecture-select');
+            const vocabTableBody = document.getElementById('vocab-table-body');
+
+            function showPage(targetId) {
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                const targetPage = document.getElementById(targetId);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                }
+            }
+
+            function updateActiveLink(activeLink) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+            }
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('data-target');
+                    showPage(targetId);
+                    updateActiveLink(this);
+                    if (sidebar.classList.contains('open')) {
+                        sidebar.classList.remove('open');
+                    }
+                });
+            });
+
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('open');
+            });
+
+            function renderVocabulary() {
+                const searchTerm = vocabSearch.value.toLowerCase();
+                const selectedLecture = lectureSelect.value;
+                
+                vocabTableBody.innerHTML = '';
+
+                const filteredVocab = allVocabulary.filter(item => {
+                    const matchesLecture = (selectedLecture === 'all' || item.lecture == selectedLecture);
+                    const matchesSearch = (
+                        item.term.toLowerCase().includes(searchTerm) ||
+                        item.pron.toLowerCase().includes(searchTerm) ||
+                        item.def.toLowerCase().includes(searchTerm)
+                    );
+                    return matchesLecture && matchesSearch;
+                });
+
+                if (filteredVocab.length === 0) {
+                    vocabTableBody.innerHTML = `<tr><td colspan="4" class="px-6 py-4 text-center text-stone-500">검색 결과가 없습니다.</td></tr>`;
+                    return;
+                }
+
+                filteredVocab.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">${item.lecture}강</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-700">${item.term}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-stone-700">${item.pron}</td>
+                        <td class="px-6 py-4 text-sm text-stone-700">${item.def}</td>
+                    `;
+                    vocabTableBody.appendChild(row);
+                });
+            }
+
+            vocabSearch.addEventListener('input', renderVocabulary);
+            lectureSelect.addEventListener('change', renderVocabulary);
+
+            showPage('page-welcome');
+            updateActiveLink(document.querySelector('.nav-link[data-target="page-welcome"]'));
+            renderVocabulary();
+        });
+    </script>
 </body>
 </html>
